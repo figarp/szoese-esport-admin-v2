@@ -3,5 +3,5 @@
 @endsection
 
 <x-app-layout>
-    <h1>Admin page</h1>
+    <p>Admin page</p>
 </x-app-layout>
