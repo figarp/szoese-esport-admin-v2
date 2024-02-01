@@ -249,3 +249,12 @@ main {
     left: 88px;
     width: calc(100% - 88px);
 }
+
+.dashboard .dashboard_card {
+    background-color: var(--sidebar-color);
+    padding: 1rem 1.8rem;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    transition: var(--tran05);
+    margin-top: 1rem;
+}

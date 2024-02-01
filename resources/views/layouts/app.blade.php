@@ -25,10 +25,12 @@
     @include('layouts.navigation')
 
     <main>
-        <div>
-            <h1>Dashboard</h1>
-            {{ $slot }}
+        <div class="dashboard_card">
+            <h1>@yield('title')</h1>
         </div>
+        <section class="dashboard_card">
+            {{ $slot }}
+        </section>
     </main>
 
     @include('includes._scripts')
