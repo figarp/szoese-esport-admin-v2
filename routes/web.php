@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,13 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// ----- Public -----
+
 Route::get('/', function () {
     return view('welcome');
 })->name("home");
 
+
+// ----- Dashboard -----
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard/admin', [AdminController::class, 'index'])->middleware(['auth', 'verified', 'check.role:vezetoseg'])->name('dashboard.admin');
+
+
+// ----- Auth -----
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

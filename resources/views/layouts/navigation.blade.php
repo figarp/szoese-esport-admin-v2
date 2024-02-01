@@ -6,7 +6,10 @@
             </span>
 
             <div class="text header-text">
-                <span class="name">SZoESE E-Sport</span>
+                <a href="{{ route('home') }}" style="text-decoration: none; color: inherit;">
+                    <span class="name">SZoESE E-Sport</span>
+                </a>
+
             </div>
         </div>
 
@@ -16,7 +19,7 @@
     <div class="menu-bar">
         <div class="menu">
             <li class="nav-link">
-                <a href="{{ route('home') }}">
+                <a href="#">
                     <i class="fa-solid fa-house icon"></i>
                     <span class="text nav-text">Főoldal</span>
                 </a>
@@ -34,7 +37,7 @@
                 </a>
             </li>
             <li class="nav-link">
-                <a href="#">
+                <a href="{{ route('dashboard.admin') }}">
                     <i class="fa-solid fa-lock icon"></i>
                     <span class="text nav-text">Admin</span>
                 </a>

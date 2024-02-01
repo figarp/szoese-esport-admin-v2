@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>SZoESE E-Sport</title>
+    <title>@yield('title')</title>
     <link rel="shortcut icon" href="{{ Vite::asset('resources/images/szoese_esport_logo_32.png') }}" type="image/x-icon">
 
-    <!-- Fonts -->
+    <!-- Fonts / Styles -->
     <script src="https://kit.fontawesome.com/18c03d310a.js" crossorigin="anonymous"></script>
 
     <!-- Scripts -->
@@ -17,6 +17,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
     </script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
 </head>
 
 <body class="dashboard">
@@ -25,10 +27,12 @@
     <main>
         <div>
             <h1>Dashboard</h1>
+            {{ $slot }}
         </div>
     </main>
 
     @include('includes._scripts')
+    @include('includes._notifications')
 </body>
 
 </html>

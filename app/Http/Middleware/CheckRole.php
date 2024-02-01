@@ -29,8 +29,7 @@ class CheckRole
                 return $next($request);
             }
         }
-
         // Ha a felhasználó nem rendelkezik bármelyik megadott szereppel, átirányítjuk egy hibaoldalra vagy vissza az előző oldalra
-        return redirect()->back()->with('error', 'Nincs megfelelő jogosultságod ehhez az oldalhoz.');
+        return redirect()->route('dashboard')->with('error', 'Nincs megfelelő jogosultságod ehhez az oldalhoz.');
     }
 }

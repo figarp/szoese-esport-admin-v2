@@ -1,7 +1,7 @@
 @section('title')
-    Dashboard
+    Admin
 @endsection
 
 <x-app-layout>
-    {{ __("You're logged in!") }}
+    <h1>Admin page</h1>
 </x-app-layout>
