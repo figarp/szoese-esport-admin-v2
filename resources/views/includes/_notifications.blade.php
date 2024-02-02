@@ -12,6 +12,6 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
     <script type="text/javascript">
-        toastr.error("{{ session('success') }}");
+        toastr.success("{{ session('success') }}");
     </script>
 @endif

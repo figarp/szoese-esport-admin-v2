@@ -19,7 +19,7 @@
     <div class="menu-bar">
         <div class="menu">
             <li class="nav-link">
-                <a href="#">
+                <a href="{{ route('dashboard') }}">
                     <i class="fa-solid fa-house icon"></i>
                     <span class="text nav-text">Főoldal</span>
                 </a>
@@ -34,6 +34,12 @@
                 <a href="#">
                     <i class="fa-solid fa-user-plus icon"></i>
                     <span class="text nav-text">Jelentkezések</span>
+                </a>
+            </li>
+            <li class="nav-link">
+                <a href="{{ route('profile.edit') }}">
+                    <i class="fa-solid fa-gear icon"></i>
+                    <span class="text nav-text">Beállítások</span>
                 </a>
             </li>
             <li class="nav-link">

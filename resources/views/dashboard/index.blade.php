@@ -3,5 +3,7 @@
 @endsection
 
 <x-app-layout>
-    {{ __("You're logged in!") }}
+    <section class="dashboard_card">
+        {{ __("You're logged in!") }}
+    </section>
 </x-app-layout>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +29,14 @@ Route::get('/dashboard', function () {
     return view('dashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/dashboard/admin', [AdminController::class, 'index'])->middleware(['auth', 'verified', 'check.role:vezetoseg'])->name('dashboard.admin');
+
+
+
+Route::middleware(['auth', 'verified', 'check.role:vezetoseg'])->group(function () {
+    Route::get('/dashboard/admin', [UserController::class, 'index'])->name('dashboard.admin');
+    Route::get('/dashboard/admin/usermanagement/edit/{id}', [UserController::class, 'edit'])->name('dashboard.admin.userManagement.edit');
+    Route::put('/dashboard/admin/usermanagement/edit/{id}', [UserController::class, 'update'])->name('dashboard.admin.userManagement.update');
+});
 
 
 // ----- Auth -----
