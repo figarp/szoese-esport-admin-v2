@@ -1,5 +1,5 @@
 @section('title')
-    Profile
+    Beállítások
 @endsection
 
 <x-app-layout>
