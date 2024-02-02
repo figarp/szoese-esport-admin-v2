@@ -1,4 +1,4 @@
-<nav class="sidebar close">
+<nav class="sidebar">
     <header>
         <div class="image-text">
             <span class="image">
@@ -12,8 +12,6 @@
 
             </div>
         </div>
-
-        <i class="fa-solid fa-angle-right toggle"></i>
     </header>
 
     <div class="menu-bar">
@@ -36,16 +34,20 @@
                     <span class="text nav-text">Jelentkezések</span>
                 </a>
             </li>
+            @auth
+                @if (auth()->user()->hasRole('vezetoseg'))
+                    <li class="nav-link">
+                        <a href="{{ route('dashboard.admin') }}">
+                            <i class="fa-solid fa-lock icon"></i>
+                            <span class="text nav-text">Admin</span>
+                        </a>
+                    </li>
+                @endif
+            @endauth
             <li class="nav-link">
                 <a href="{{ route('profile.edit') }}">
                     <i class="fa-solid fa-gear icon"></i>
                     <span class="text nav-text">Beállítások</span>
-                </a>
-            </li>
-            <li class="nav-link">
-                <a href="{{ route('dashboard.admin') }}">
-                    <i class="fa-solid fa-lock icon"></i>
-                    <span class="text nav-text">Admin</span>
                 </a>
             </li>
         </div>
@@ -57,7 +59,7 @@
                     <span class="text nav-text">Kijelentkezés</span>
                 </a>
             </li>
-            <li class="mode">
+            {{-- <li class="mode">
                 <div class="moon-sun">
                     <i class="fa-solid fa-moon icon moon"></i>
                     <i class="fa-solid fa-sun icon sun"></i>
@@ -67,7 +69,7 @@
                 <div class="toggle-switch">
                     <span class="switch"></span>
                 </div>
-            </li>
+            </li> --}}
         </div>
     </div>
 </nav>

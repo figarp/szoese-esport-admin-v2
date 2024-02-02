@@ -6,10 +6,10 @@
     --toggle-color: #ddd;
     --text-color: #707070;
 
-    --tran02: all 0.2s ease;
-    --tran03: all 0.3s ease;
-    --tran04: all 0.4s ease;
-    --tran05: all 0.5s ease;
+    --tran02: none;
+    --tran03: none;
+    --tran04: none;
+    --tran05: none;
 }
 
 .dashboard {
@@ -283,4 +283,8 @@ main {
 .dashboard.dark .form-control {
     background: var(--primary-colo);
     color: var(--text-color);
+}
+
+.no-transition {
+    transition: none !important;
 }

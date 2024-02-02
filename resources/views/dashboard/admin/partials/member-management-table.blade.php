@@ -1,14 +1,6 @@
-<section>
-    <header>
-        <h2>
-            {{ __('Tagok Kezelése') }}
-        </h2>
-
-        <p>
-            {{ __('Regisztrált felhasználók kezelése. ') }}
-        </p>
-    </header>
-    <table id="tblData">
+<section class="mt-5">
+    <h1 class="mb-3">Tagok Kezelése</h1>
+    <table id="usersDataTable">
         <thead>
             <th>Teljes Név</th>
             <th>Felhasználónév</th>
@@ -39,6 +31,6 @@
     });
 
     function loadDataTable() {
-        let table = new DataTable('#tblData');
+        let table = new DataTable('#usersDataTable');
     }
 </script>
