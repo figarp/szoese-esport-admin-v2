@@ -4,7 +4,7 @@
             <div class="col-md-4">
                 <h5>Hasznos linkek</h5>
                 <ul class="list-unstyled">
-                    <li><a href="{{ asset('home') }}">Főoldal</a></li>
+                    <li><a href="{{ route('home') }}">Főoldal</a></li>
                 </ul>
             </div>
             <div class="col-md-4">

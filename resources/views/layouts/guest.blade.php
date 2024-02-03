@@ -22,7 +22,7 @@
 <body>
     <x-nav-bar />
     <div class="container-md">
-        <div class="row justify-content-center mt-5">
+        <div class="row justify-content-center mt-5 mb-5">
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body">
