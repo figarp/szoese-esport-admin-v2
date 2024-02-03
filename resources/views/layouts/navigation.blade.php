@@ -23,9 +23,9 @@
                 </a>
             </li>
             <li class="nav-link">
-                <a href="#">
-                    <i class="fa-solid fa-book icon"></i>
-                    <span class="text nav-text">Nyilvántartás</span>
+                <a href="{{ route('dashboard.groups.index') }}">
+                    <i class="fa-solid fa-gamepad icon"></i>
+                    <span class="text nav-text">Csoportok</span>
                 </a>
             </li>
             <li class="nav-link">

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -31,13 +32,22 @@ Route::get('/dashboard', function () {
 
 
 
-
+// ----- Vezetőségi Útvonalak -----
 Route::middleware(['auth', 'verified', 'check.role:vezetoseg'])->group(function () {
     Route::get('/dashboard/admin', [UserController::class, 'index'])->name('dashboard.admin');
     Route::get('/dashboard/admin/usermanagement/edit/{id}', [UserController::class, 'edit'])->name('dashboard.admin.userManagement.edit');
     Route::put('/dashboard/admin/usermanagement/edit/{id}', [UserController::class, 'update'])->name('dashboard.admin.userManagement.update');
+
+    Route::get('/dashboard/groups', [GroupController::class, 'index'])->name('dashboard.groups.index');
+    Route::get('/dashboard/groups/create', [GroupController::class, 'create'])->name('dashboard.groups.create');
+    Route::post('/dashboard/groups', [GroupController::class, 'store'])->name('dashboard.groups.store');
+    Route::get('/dashboard/groups/{id}', [GroupController::class, 'show'])->name('dashboard.groups.show');
+    Route::get('/dashboard/groups/{id}/edit', [GroupController::class, 'edit'])->name('dashboard.groups.edit');
+    Route::put('/dashboard/groups/{id}', [GroupController::class, 'update'])->name('dashboard.groups.update');
+    Route::delete('/dashboard/groups/{id}', [GroupController::class, 'destroy'])->name('dashboard.groups.destroy');
 });
 
+Route::get('/search-leaders', [GroupController::class, 'searchLeaders']);
 
 // ----- Auth -----
 

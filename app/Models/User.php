@@ -60,4 +60,19 @@ class User extends Authenticatable
     {
         return $this->last_name . ' ' . $this->first_name;
     }
+
+    public function assignRole($roleName)
+    {
+        $role = Role::where('name', $roleName)->first();
+
+        if ($role) {
+            $this->role_id = $role->id;
+            $this->save();
+        }
+    }
+
+    public function hasPermissionLevelOf($requiredLevel)
+    {
+        return $this->role->permission_level < $requiredLevel;
+    }
 }
