@@ -1,7 +1,7 @@
 :root {
     --body-color: #e4e9f7;
     --sidebar-color: #fff;
-    --primary-colo: #695cfe;
+    --primary-colo: #056aa5;
     --primary-color-light: #f6f5ff;
     --toggle-color: #ddd;
     --text-color: #707070;
@@ -263,28 +263,7 @@ main {
     display: none;
 }
 
-.form-select {
-    background: var(--sidebar-color);
+.btn-link {
+    text-decoration: none;
     color: var(--text-color);
-    border-color: var(--text-color);
-    transition: var(--tran05);
-}
-
-.form-control,
-.btn-info {
-    transition: var(--tran05);
-}
-
-.dashboard.dark .btn-info {
-    background: var(--primary-colo);
-    border-color: var(--body-color);
-}
-
-.dashboard.dark .form-control {
-    background: var(--primary-colo);
-    color: var(--text-color);
-}
-
-.no-transition {
-    transition: none !important;
 }

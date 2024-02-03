@@ -3,10 +3,6 @@
         <h2>
             {{ __('Új Jelszó Beállítása') }}
         </h2>
-
-        <p>
-            {{ __('Győződjön meg róla, hogy fiókja hosszú, véletlenszerű jelszót használ a biztonság érdekében.') }}
-        </p>
     </header>
 
     <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">

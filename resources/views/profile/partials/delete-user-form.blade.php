@@ -5,7 +5,7 @@
         </h2>
 
         <p>
-            {{ __('A fiók törlése után a fiók minden erőforrása és adata véglegesen törlődik. Mielőtt törli fiókját, kérjük, töltse le azokat az adatokat vagy információkat, amelyeket meg kíván őrizni.') }}
+            {{ __('A fiók törlését követően minden hozzá tartozó adat véglegesen törlődni fog.') }}
         </p>
     </header>
 
@@ -19,11 +19,11 @@
         @method('delete')
 
         <h2>
-            {{ __('Biztos törölni szeretné a fiókját?') }}
+            {{ __('Biztos törlöd a fiókod?') }}
         </h2>
 
         <p>
-            {{ __('A megerősítéshez adja meg a jelszavát!') }}
+            {{ __('A megerősítéshez add meg a jelszavad!') }}
         </p>
 
         <div class="mt-6">
@@ -31,8 +31,6 @@
 
             <x-text-input id="password" name="password" type="password" class="mt-1 block w-3/4"
                 placeholder="{{ __('Jelszó') }}" />
-
-            <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
         </div>
 
         <div class="mt-5">
