@@ -14,6 +14,7 @@
                         <th>Játék</th>
                         <th>Vezető</th>
                         <th>Leírás</th>
+                        <th>Tagok száma</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
@@ -22,10 +23,38 @@
                                 <td>{{ $group->game }}</td>
                                 <td>{{ $group->leader->full_name() }}</td>
                                 <td>{{ $group->shortDescription() }}</td>
+                                <td>{{ $group->usersCount() }}</td>
                                 <td>
-                                    <x-danger-button onclick="deleteGroup({{ $group->id }})">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </x-danger-button>
+                                    @if ($group->leader->id === auth()->id())
+                                        <!-- Ha a felhasználó a csoport vezetője, csak a szerkesztés és törlés gombok jelennek meg -->
+                                        <x-danger-button id="deleteBtn" onclick="deleteGroup({{ $group->id }})"
+                                            title="Törlés">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </x-danger-button>
+                                        <a href="{{ route('dashboard.groups.edit', $group->id) }}"
+                                            class="btn btn-primary" title="Szerkesztés">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>
+                                    @else
+                                        <!-- Ha a felhasználó nem a csoport vezetője -->
+                                        @if ($group->isUserMember(auth()->id()))
+                                            <!-- Ha a felhasználó csatlakozott a csoportba, csak a kilépés gomb jelenik meg -->
+                                            <form action="{{ route('groups.leave', $group->id) }}" method="post">
+                                                @csrf
+                                                <button class="btn btn-danger" title="Kilépés">
+                                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <!-- Ha a felhasználó nem csatlakozott a csoportba, csak a csatlakozás gomb jelenik meg -->
+                                            <form action="{{ route('groups.join', $group->id) }}" method="post">
+                                                @csrf
+                                                <button class="btn btn-success" title="Csatlakozás">
+                                                    <i class="fa-solid fa-right-to-bracket"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -43,6 +72,8 @@
                 }
 
                 function deleteGroup(id) {
+                    document.getElementById('deleteBtn').disabled = true;
+
                     Swal.fire({
                         title: "Biztos vagy benne?",
                         text: "A csoport törlését nem lehet visszaállítani!",
@@ -71,7 +102,11 @@
                                         text: `Ismeretlen hiba történt...`,
                                         icon: "error"
                                     });
-                                });
+
+                                    document.getElementById('deleteBtn').disabled = false;
+                                })
+                        } else {
+                            document.getElementById('deleteBtn').disabled = false;
                         }
                     });
                 }

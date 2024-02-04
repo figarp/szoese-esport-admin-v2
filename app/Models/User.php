@@ -22,8 +22,7 @@ class User extends Authenticatable
         'first_name',
         'username',
         'email',
-        'password',
-        'role_id'
+        'password'
     ];
 
     /**
@@ -46,33 +45,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function hasRole($role)
-    {
-        return $this->role()->where('name', $role)->exists();
-    }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
     public function full_name()
     {
         return $this->last_name . ' ' . $this->first_name;
     }
 
-    public function assignRole($roleName)
+    /**
+     * Get the groups that the user belongs to.
+     */
+    public function groups()
     {
-        $role = Role::where('name', $roleName)->first();
-
-        if ($role) {
-            $this->role_id = $role->id;
-            $this->save();
-        }
-    }
-
-    public function hasPermissionLevelOf($requiredLevel)
-    {
-        return $this->role->permission_level < $requiredLevel;
+        return $this->belongsToMany(Group::class, 'group_users');
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use App\Models\Role;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -36,12 +36,8 @@ class GroupController extends Controller
             'leader_id' => 'required'
         ]);
 
-        Group::create($request->all());
-
-        $leader = User::find($request->leader_id);
-        if ($leader->hasPermissionLevelOf(Role::where('name', 'csoportvezeto')->first()->getPermissionLevel())) {
-            $leader->assignRole('csoportvezeto');
-        }
+        $group = Group::create($request->all());
+        $group->users()->attach($request->leader_id, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
 
         return redirect()->route('dashboard.groups.index')
             ->with('success', 'Új csoport sikeresen létrehozva!');
@@ -58,11 +54,13 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+
     public function edit(string $id)
     {
         $group = Group::findOrFail($id);
         return view('dashboard.groups.edit', compact('group'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -86,11 +84,6 @@ class GroupController extends Controller
     public function destroy(string $id)
     {
         $group = Group::findOrFail($id);
-
-        $leader = $group->leader;
-        if (!$leader->hasRole('vezetoseg')) {
-            $leader->assignRole('tag');
-        }
 
         $group->delete();
 

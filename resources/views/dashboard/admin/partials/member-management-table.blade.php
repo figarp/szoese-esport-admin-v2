@@ -5,7 +5,6 @@
             <th>Teljes Név</th>
             <th>Felhasználónév</th>
             <th>Email cím</th>
-            <th>Beosztás</th>
             <th>Action</th>
         </thead>
         <tbody>
@@ -14,7 +13,6 @@
                     <td>{{ $user->full_name() }}</td>
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->role->display_name }}</td>
                     <td>
                         <a href="{{ route('dashboard.admin.userManagement.edit', $user->id) }}" class="btn btn-info"
                             role="button" title="Szerkesztés"><i class="fa-solid fa-pen-to-square"></i></a>

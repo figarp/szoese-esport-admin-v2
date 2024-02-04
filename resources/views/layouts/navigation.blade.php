@@ -34,16 +34,12 @@
                     <span class="text nav-text">Jelentkezések</span>
                 </a>
             </li>
-            @auth
-                @if (auth()->user()->hasRole('vezetoseg'))
-                    <li class="nav-link">
-                        <a href="{{ route('dashboard.admin') }}">
-                            <i class="fa-solid fa-lock icon"></i>
-                            <span class="text nav-text">Admin</span>
-                        </a>
-                    </li>
-                @endif
-            @endauth
+            <li class="nav-link">
+                <a href="{{ route('dashboard.admin') }}">
+                    <i class="fa-solid fa-lock icon"></i>
+                    <span class="text nav-text">Admin</span>
+                </a>
+            </li>
             <li class="nav-link">
                 <a href="{{ route('profile.edit') }}">
                     <i class="fa-solid fa-gear icon"></i>

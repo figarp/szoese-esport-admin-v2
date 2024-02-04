@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
+use App\Models\Group;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -32,10 +31,8 @@ class UserController extends Controller
     {
         // Felhasználó keresése az azonosító alapján
         $user = User::findOrFail($id);
-        $roles = Role::all();
-
         // Felhasználó adatainak átadása a szerkesztési nézetnek
-        return view('dashboard.admin.user_management.edit-user', compact('user', 'roles'));
+        return view('dashboard.admin.user_management.edit-user', compact('user'));
     }
 
     /**
@@ -60,5 +57,40 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function joinGroup($groupId)
+    {
+        $user = auth()->user();
+
+        // Ellenőrizzük, hogy a felhasználó már csatlakozott-e a csoportba
+        if ($user->groups()->where('group_id', $groupId)->exists()) {
+            return redirect()->route('dashboard.groups.index')->with('error', 'Már csatlakoztál ehhez a csoportba!');
+        }
+
+        $group = Group::findOrFail($groupId);
+
+        // Csatlakozás a csoportba
+        $user->groups()->attach($group);
+
+        return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen csatlakoztál a csoportba!');
+    }
+
+
+    public function leaveGroup($groupId)
+    {
+        $user = auth()->user();
+
+        // Ellenőrizzük, hogy a felhasználó valóban csatlakozott-e a csoportba
+        if (!$user->groups()->where('group_id', $groupId)->exists()) {
+            return redirect()->route('dashboard.groups.index')->with('error', 'Nem vagy tagja ennek a csoportnak!');
+        }
+
+        $group = Group::findOrFail($groupId);
+
+        // Kilépés a csoportból
+        $user->groups()->detach($group);
+
+        return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen kiléptél a csoportból!');
     }
 }

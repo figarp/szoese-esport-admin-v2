@@ -20,14 +20,25 @@ class Group extends Model
         return $this->belongsTo(User::class, 'leader_id');
     }
 
-    public function members()
+    public function isUserMember($userId)
     {
-        return $this->belongsToMany(User::class, 'group_user', 'group_id', 'user_id');
+        return $this->users()->where('user_id', $userId)->exists();
     }
 
-    public function membersCount()
+    /**
+     * Get the users who belong to the group.
+     */
+    public function users()
     {
-        return $this->members()->count();
+        return $this->belongsToMany(User::class, 'group_users');
+    }
+
+    /**
+     * Get the count of users who belong to the group.
+     */
+    public function usersCount()
+    {
+        return $this->users()->count();
     }
 
     public function shortDescription()

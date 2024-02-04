@@ -33,7 +33,7 @@ Route::get('/dashboard', function () {
 
 
 // ----- Vezetőségi Útvonalak -----
-Route::middleware(['auth', 'verified', 'check.role:vezetoseg'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/admin', [UserController::class, 'index'])->name('dashboard.admin');
     Route::get('/dashboard/admin/usermanagement/edit/{id}', [UserController::class, 'edit'])->name('dashboard.admin.userManagement.edit');
     Route::put('/dashboard/admin/usermanagement/edit/{id}', [UserController::class, 'update'])->name('dashboard.admin.userManagement.update');
@@ -45,12 +45,19 @@ Route::middleware(['auth', 'verified', 'check.role:vezetoseg'])->group(function 
     Route::get('/dashboard/groups/{id}/edit', [GroupController::class, 'edit'])->name('dashboard.groups.edit');
     Route::put('/dashboard/groups/{id}', [GroupController::class, 'update'])->name('dashboard.groups.update');
     Route::delete('/dashboard/groups/{id}', [GroupController::class, 'destroy'])->name('dashboard.groups.destroy');
+
+
 });
 
-Route::get('/search-leaders', [GroupController::class, 'searchLeaders']);
+// ----- User -----
+Route::middleware(['auth'])->group(function () {
+    Route::get('/search-leaders', [GroupController::class, 'searchLeaders']);
+
+    Route::post('/groups/{groupId}/join', [UserController::class, 'joinGroup'])->name('groups.join');
+    Route::post('/groups/{groupId}/leave', [UserController::class, 'leaveGroup'])->name('groups.leave');
+});
 
 // ----- Auth -----
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -31,17 +31,6 @@
                     <x-text-input id="email" type="email" name="email" :value="$user->email" disabled />
                 </div>
 
-                <div class="mb-5">
-                    <label for="role_select" class="form-label mt-4">Beosztás</label>
-                    <select class="form-select" id="role_select" name="role_id">
-                        @foreach ($roles as $role)
-                            <option value="{{ $role->id }}" {{ $user->role_id == $role->id ? 'selected' : '' }}>
-                                {{ $role->display_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
                 <div class="d-flex justify-content-between">
                     <x-secondary-button>
                         <a style="text-decoration: none; color: white;"
