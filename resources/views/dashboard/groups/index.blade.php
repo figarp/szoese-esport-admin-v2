@@ -7,15 +7,19 @@
         <div class="max-w-xl">
             <section class="mt-5">
                 <h1 class="mb-3">Csoportok</h1>
-                <a href="{{ route('dashboard.groups.create') }}" class="btn btn-primary mb-5"><i
-                        class="fa-solid fa-plus"></i> <span>Új Csoport</span></a>
+                @can('create_group')
+                    <a href="{{ route('dashboard.groups.create') }}" class="btn btn-primary mb-5">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Új Csoport</span>
+                    </a>
+                @endcan
                 <table id="usersDataTable">
                     <thead>
                         <th>Játék</th>
                         <th>Vezető</th>
                         <th>Leírás</th>
                         <th>Tagok száma</th>
-                        <th>Action</th>
+                        <th>Műveletek</th>
                     </thead>
                     <tbody>
                         @foreach ($groups as $group)
@@ -23,38 +27,44 @@
                                 <td>{{ $group->game }}</td>
                                 <td>{{ $group->leader->full_name() }}</td>
                                 <td>{{ $group->shortDescription() }}</td>
-                                <td>{{ $group->usersCount() }}</td>
+                                <td>{{ $group->membersCount() }}</td>
                                 <td>
-                                    @if ($group->leader->id === auth()->id())
-                                        <!-- Ha a felhasználó a csoport vezetője, csak a szerkesztés és törlés gombok jelennek meg -->
-                                        <x-danger-button id="deleteBtn" onclick="deleteGroup({{ $group->id }})"
-                                            title="Törlés">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </x-danger-button>
-                                        <a href="{{ route('dashboard.groups.edit', $group->id) }}"
-                                            class="btn btn-primary" title="Szerkesztés">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-                                    @else
-                                        <!-- Ha a felhasználó nem a csoport vezetője -->
-                                        @if ($group->isUserMember(auth()->id()))
-                                            <!-- Ha a felhasználó csatlakozott a csoportba, csak a kilépés gomb jelenik meg -->
-                                            <form action="{{ route('groups.leave', $group->id) }}" method="post">
-                                                @csrf
-                                                <button class="btn btn-danger" title="Kilépés">
-                                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                                </button>
-                                            </form>
-                                        @else
-                                            <!-- Ha a felhasználó nem csatlakozott a csoportba, csak a csatlakozás gomb jelenik meg -->
-                                            <form action="{{ route('groups.join', $group->id) }}" method="post">
+                                    <div class="d-flex gap-1">
+                                        @can('join_group', $group->id)
+                                            <form action="{{ route('groups.join', $group->id) }}" method="POST">
                                                 @csrf
                                                 <button class="btn btn-success" title="Csatlakozás">
                                                     <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
                                             </form>
-                                        @endif
-                                    @endif
+                                        @endcan
+                                        @can('leave_group', $group->id)
+                                            <form action="{{ route('groups.leave', $group->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-danger" title="Kilépés">
+                                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                        @can('edit_group', $group->id)
+                                            <form action="{{ route('dashboard.groups.edit', $group->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-primary" title="Szerkesztés">
+                                                    <i class="fa-solid fa-pen"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                        @can('delete_group')
+                                            <form action="{{ route('dashboard.groups.destroy', $group->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="btn btn-danger" title="Törlés">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

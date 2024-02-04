@@ -31,7 +31,10 @@ class RolePermissionsSeeder extends Seeder
             ['role_id' => 3, 'permission_id' => 4], // manage_group_members
 
             // Tagok (4)
-            ['role_id' => 4, 'permission_id' => 5], // join_leave_group
+
+            // Vendégek (5)
+            ['role_id' => 5, 'permission_id' => 5], // join_group
+            ['role_id' => 5, 'permission_id' => 6], // leave_group
         ]);
     }
 }

@@ -37,7 +37,7 @@ class GroupController extends Controller
         ]);
 
         $group = Group::create($request->all());
-        $group->users()->attach($request->leader_id, ['created_at' => Carbon::now(), 'updated_at' => Carbon::now()]);
+        $group->addMember($request->leader_id);
 
         return redirect()->route('dashboard.groups.index')
             ->with('success', 'Új csoport sikeresen létrehozva!');
@@ -48,6 +48,7 @@ class GroupController extends Controller
      */
     public function show(string $id)
     {
+        $group = Group::findOrFail($id);
         return view('dashboard.groups.show', compact('group'));
     }
 
@@ -65,14 +66,21 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(string $id)
     {
         $group = Group::findOrFail($id);
-        $request->validate([
+        request()->validate([
             'game' => 'required|unique:groups,game,' . $group->id,
         ]);
 
-        $group->update($request->all());
+        if (request('leader_id') != $group->leader->id) {
+            $errors = $group->setLeader(request('leader_id'));
+            if (strlen($errors) > 0) {
+                return redirect()->route('dashboard.groups.index')->with('error', $errors);
+            }
+        }
+
+        $group->update(request()->all());
 
         return redirect()->route('dashboard.groups.index')
             ->with('success', 'Csoport sikeresen frissítve!');
@@ -84,6 +92,8 @@ class GroupController extends Controller
     public function destroy(string $id)
     {
         $group = Group::findOrFail($id);
+
+        $group->removeAllMembers();
 
         $group->delete();
 

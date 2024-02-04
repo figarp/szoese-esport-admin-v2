@@ -35,9 +35,9 @@
                 </a>
             </li>
             <li class="nav-link">
-                <a href="{{ route('dashboard.admin') }}">
+                <a href="{{ route('dashboard.users') }}">
                     <i class="fa-solid fa-lock icon"></i>
-                    <span class="text nav-text">Admin</span>
+                    <span class="text nav-text">Tagok</span>
                 </a>
             </li>
             <li class="nav-link">

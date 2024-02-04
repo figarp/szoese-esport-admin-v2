@@ -14,14 +14,17 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = [
+        $admins = [
             [
                 'first_name' => 'Árpád',
                 'last_name' => 'Figura',
                 'username' => 'Mexter',
                 'email' => 'figuraarpad03@gmail.com',
-                'password' => Hash::make('admin1234')
+                'password' => Hash::make('admin1234'),
             ],
+        ];
+
+        $users = [
             [
                 'first_name' => 'Elek',
                 'last_name' => 'Teszt',
@@ -29,11 +32,15 @@ class UserSeeder extends Seeder
                 'email' => 'teszt@elek.hu',
                 'password' => Hash::make('test1234'),
             ],
-            // Itt adhatsz hozzá további teszt felhasználókat
         ];
 
         foreach ($users as $userData) {
             User::create($userData);
+        }
+
+        foreach ($admins as $userData) {
+            $user = User::create($userData);
+            $user->assignRole('admin');
         }
     }
 }

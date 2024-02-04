@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
+
 
 class UserController extends Controller
 {
@@ -44,9 +46,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         // Bejegyzés frissítése
-        $user->update([
-            'role_id' => request('role_id'),
-        ]);
+        $user->update(request()->all());
 
         return redirect()->route('dashboard.admin.userManagement.edit', $user->id)
             ->with('success', 'Sikeres frissítés');
@@ -61,17 +61,19 @@ class UserController extends Controller
 
     public function joinGroup($groupId)
     {
+        if (!Gate::allows('join_group', $groupId)) {
+            return redirect()->route('dashboard.groups.index')->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+        }
+
         $user = auth()->user();
+        $group = Group::findOrFail($groupId);
 
         // Ellenőrizzük, hogy a felhasználó már csatlakozott-e a csoportba
         if ($user->groups()->where('group_id', $groupId)->exists()) {
-            return redirect()->route('dashboard.groups.index')->with('error', 'Már csatlakoztál ehhez a csoportba!');
+            return redirect()->route('dashboard.groups.index')->with('error', 'Már csatlakoztál ebbe a csoportba!');
         }
 
-        $group = Group::findOrFail($groupId);
-
-        // Csatlakozás a csoportba
-        $user->groups()->attach($group);
+        $group->addMember($user->id);
 
         return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen csatlakoztál a csoportba!');
     }
@@ -79,17 +81,20 @@ class UserController extends Controller
 
     public function leaveGroup($groupId)
     {
+        if (!Gate::allows('leave_group', $groupId)) {
+            return redirect()->route('dashboard.groups.index')->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+        }
+
         $user = auth()->user();
+        $group = Group::findOrFail($groupId);
 
         // Ellenőrizzük, hogy a felhasználó valóban csatlakozott-e a csoportba
         if (!$user->groups()->where('group_id', $groupId)->exists()) {
             return redirect()->route('dashboard.groups.index')->with('error', 'Nem vagy tagja ennek a csoportnak!');
         }
 
-        $group = Group::findOrFail($groupId);
-
         // Kilépés a csoportból
-        $user->groups()->detach($group);
+        $group->removeMember($user->id);
 
         return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen kiléptél a csoportból!');
     }

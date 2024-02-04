@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    public $timestamps = true;
 
     /**
      * The attributes that are mass assignable.
@@ -71,12 +72,39 @@ class User extends Authenticatable
     public function assignRole($roleName)
     {
         $role = Role::where('name', $roleName)->firstOrFail();
-        $this->roles()->attach($role);
+
+        $this->roles()->attach($role, [
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     public function removeRole($roleName)
     {
         $role = Role::where('name', $roleName)->firstOrFail();
         $this->roles()->detach($role);
+    }
+
+    public function hasPermission($permissionName)
+    {
+        return $this->roles->flatMap->permissions->pluck('name')->contains($permissionName);
+    }
+
+    public function getHighestRole()
+    {
+        // Ellenőrizzük, hogy a felhasználónak van-e szerepe
+        if ($this->roles->isEmpty()) {
+            return null;
+        }
+
+        // Keresse meg a legkisebb role_id-t a felhasználó szerepeiben
+        $highestRole = $this->roles->sortBy('id')->first();
+
+        return $highestRole;
+    }
+
+    public function leadingGroups()
+    {
+        return Group::where('leader_id', $this->id)->get();
     }
 }

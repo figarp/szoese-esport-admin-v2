@@ -5,7 +5,7 @@
             <th>Teljes Név</th>
             <th>Felhasználónév</th>
             <th>Email cím</th>
-            <th>Action</th>
+            <th>Beosztás</th>
         </thead>
         <tbody>
             @foreach ($users as $user)
@@ -14,8 +14,9 @@
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->email }}</td>
                     <td>
-                        <a href="{{ route('dashboard.admin.userManagement.edit', $user->id) }}" class="btn btn-info"
-                            role="button" title="Szerkesztés"><i class="fa-solid fa-pen-to-square"></i></a>
+                        @foreach ($user->roles as $role)
+                            {{ $role->display_name }}
+                        @endforeach
                     </td>
                 </tr>
             @endforeach

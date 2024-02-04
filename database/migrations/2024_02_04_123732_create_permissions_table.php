@@ -22,7 +22,8 @@ return new class extends Migration {
             ['name' => 'edit_group', 'description' => 'Csoport szerkesztése'],
             ['name' => 'delete_group', 'description' => 'Csoport törlése'],
             ['name' => 'manage_group_members', 'description' => 'Csoport tagjainak kezelése'],
-            ['name' => 'join_leave_group', 'description' => 'Csoportokhoz csatlakozás / kilépés']
+            ['name' => 'join_groups', 'description' => 'Csoportokhoz csatlakozás'],
+            ['name' => 'leave_groups', 'description' => 'Csoportokból kilépés'],
         ]);
     }
 

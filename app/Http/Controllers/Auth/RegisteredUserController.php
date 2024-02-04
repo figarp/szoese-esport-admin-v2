@@ -46,6 +46,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Automatikusan hozzáadunk egy vendég rangot a felhasználóhoz
+        $user->assignRole('vendeg');
+
         event(new Registered($user));
 
         Auth::login($user);
