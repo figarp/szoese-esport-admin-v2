@@ -20,8 +20,7 @@ class UserSeeder extends Seeder
                 'last_name' => 'Figura',
                 'username' => 'Mexter',
                 'email' => 'figuraarpad03@gmail.com',
-                'password' => Hash::make('admin1234'),
-                'role_id' => 7
+                'password' => Hash::make('admin1234')
             ],
             [
                 'first_name' => 'Elek',
