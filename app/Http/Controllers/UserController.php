@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
@@ -93,8 +94,13 @@ class UserController extends Controller
             return redirect()->route('dashboard.groups.index')->with('error', 'Nem vagy tagja ennek a csoportnak!');
         }
 
+        $application = Application::where('user_id', $user->id)->where('group_id', $group->id)->first();
+
         // Kilépés a csoportból
         $group->removeMember($user->id);
+        if ($application) {
+            $application->delete();
+        }
 
         return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen kiléptél a csoportból!');
     }

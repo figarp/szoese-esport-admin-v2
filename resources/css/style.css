@@ -285,3 +285,7 @@ datalist option:checked {
     background-color: #cfd8dc;
     font-weight: bold;
 }
+
+p {
+    max-width: 120ch;
+}

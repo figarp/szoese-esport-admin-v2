@@ -107,4 +107,19 @@ class User extends Authenticatable
     {
         return Group::where('leader_id', $this->id)->get();
     }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function applicationsByStatus($status)
+    {
+        return $this->hasMany(Application::class)->where('status', $status);
+    }
+
+    public function groupApplication($groupId)
+    {
+        return $this->applications()->where('group_id', $groupId)->first();
+    }
 }

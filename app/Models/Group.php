@@ -65,7 +65,13 @@ class Group extends Model
 
     public function members()
     {
-        return $this->belongsToMany(User::class, 'group_users');
+        return $this->belongsToMany(User::class, 'group_users', 'group_id', 'user_id')
+            ->withTimestamps();
+    }
+
+    public function memberJoinedAt($memberId)
+    {
+        return $this->members()->where('user_id', $memberId)->first()->pivot->created_at;
     }
 
     public function membersCount()
@@ -125,4 +131,11 @@ class Group extends Model
         }
         return $shortDescription;
     }
+
+    public function incomingApplications()
+    {
+        return Application::where('group_id', $this->id)->get();
+    }
+
+
 }

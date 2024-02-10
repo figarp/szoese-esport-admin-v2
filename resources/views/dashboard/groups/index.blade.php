@@ -24,15 +24,20 @@
                     <tbody>
                         @foreach ($groups as $group)
                             <tr>
-                                <td>{{ $group->game }}</td>
+                                <td><a href="{{ route('dashboard.groups.show', $group->id) }}">{{ $group->game }}</a>
+                                </td>
                                 <td>{{ $group->leader->full_name() }}</td>
                                 <td>{{ $group->shortDescription() }}</td>
                                 <td>{{ $group->membersCount() }}</td>
                                 <td>
                                     <div class="d-flex gap-1">
                                         @can('join_group', $group->id)
-                                            <form action="{{ route('groups.join', $group->id) }}" method="POST">
+                                            <form action="{{ route('application.store') }}" method="POST">
                                                 @csrf
+                                                <input type="text" id="group_id" name="group_id"
+                                                    value="{{ $group->id }}" hidden>
+                                                <input type="text" id="user_id" name="user_id"
+                                                    value="{{ Auth::user()->id }}" hidden>
                                                 <button class="btn btn-success" title="Csatlakozás">
                                                     <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
@@ -47,7 +52,7 @@
                                             </form>
                                         @endcan
                                         @can('edit_group', $group->id)
-                                            <form action="{{ route('dashboard.groups.edit', $group->id) }}" method="POST">
+                                            <form action="{{ route('dashboard.groups.edit', $group->id) }}" method="GET">
                                                 @csrf
                                                 <button class="btn btn-primary" title="Szerkesztés">
                                                     <i class="fa-solid fa-pen"></i>
@@ -55,14 +60,35 @@
                                             </form>
                                         @endcan
                                         @can('delete_group')
-                                            <form action="{{ route('dashboard.groups.destroy', $group->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('delete')
-                                                <button class="btn btn-danger" title="Törlés">
-                                                    <i class="fa-solid fa-trash"></i>
-                                                </button>
-                                            </form>
+                                            <button class="btn btn-danger" title="Törlés" data-bs-toggle="modal"
+                                                data-bs-target="#deleteGroup{{ $group->id }}Modal">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+
+                                            <x-modal id="deleteGroup{{ $group->id }}Modal" name="Csoport Törlése">
+                                                <p>Biztosan törölni szeretnéd a '<strong>{{ $group->game }}</strong>' nevű
+                                                    csoportot?</p>
+                                                <form action="{{ route('dashboard.groups.destroy', $group->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('delete')
+
+                                                    <div class="form-group mb-3">
+                                                        <x-input-label for="group{{ $group->id }}"
+                                                            value="{{ __('A megerősítéshez írd be a csoport nevét!') }}" />
+                                                        <x-text-input id="group{{ $group->id }}"
+                                                            name="group{{ $group->id }}" type="text"
+                                                            oninput="checkGroupName('group{{ $group->id }}', '{{ $group->game }}', 'deleteGroup{{ $group->id }}Btn')"
+                                                            class="is-invalid" />
+                                                    </div>
+
+                                                    <button class="btn btn-danger" title="Törlés"
+                                                        id="deleteGroup{{ $group->id }}Btn" disabled>
+                                                        <i class="fa-solid fa-trash"></i>
+                                                        <span>Törlés</span>
+                                                    </button>
+                                                </form>
+                                            </x-modal>
                                         @endcan
                                     </div>
                                 </td>
@@ -76,6 +102,17 @@
                 $(document).ready(function() {
                     loadDataTable();
                 });
+
+                function checkGroupName(inputId, groupName, btn) {
+                    console.log(inputId, groupName)
+                    if ($('#' + inputId).val() === groupName) {
+                        $('#' + inputId).addClass('is-valid').removeClass('is-invalid');
+                        $('#' + btn).prop('disabled', false);
+                    } else {
+                        $('#' + inputId).addClass('is-invalid').removeClass('is-valid');
+                        $('#' + btn).prop('disabled', true);
+                    }
+                }
 
                 function loadDataTable() {
                     let table = new DataTable('#usersDataTable');
@@ -121,7 +158,6 @@
                     });
                 }
             </script>
-
         </div>
     </div>
 </x-app-layout>

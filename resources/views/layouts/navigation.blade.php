@@ -29,15 +29,9 @@
                 </a>
             </li>
             <li class="nav-link">
-                <a href="#">
+                <a href="{{ route('dashboard.application.index') }}">
                     <i class="fa-solid fa-user-plus icon"></i>
                     <span class="text nav-text">Jelentkezések</span>
-                </a>
-            </li>
-            <li class="nav-link">
-                <a href="{{ route('dashboard.users') }}">
-                    <i class="fa-solid fa-lock icon"></i>
-                    <span class="text nav-text">Tagok</span>
                 </a>
             </li>
             <li class="nav-link">

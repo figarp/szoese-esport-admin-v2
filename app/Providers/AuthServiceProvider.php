@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+use App\Models\Application;
 use App\Models\Group;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -35,16 +36,24 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('delete_group', function ($user) {
             return $user->hasPermission('delete_group');
         });
-        Gate::define('manage_group_members', function ($user) {
-            return $user->hasPermission('manage_group_members');
+        Gate::define('manage_group_members', function ($user, $groupId) {
+            $group = Group::findOrFail($groupId);
+            return $user->hasPermission('manage_group_members') && $group->leader->id == $user->id;
         });
         Gate::define('join_group', function ($user, $groupId) {
             $group = Group::findOrFail($groupId);
-            return $user->hasPermission('join_groups') && !$group->members->contains($user->id);
+            return $user->hasPermission('join_groups') &&
+                !$group->members->contains($user->id) &&
+                $user->applications()->where('group_id', $groupId)->doesntExist();
         });
         Gate::define('leave_group', function ($user, $groupId) {
             $group = Group::findOrFail($groupId);
-            return $user->hasPermission('leave_groups') && $group->members->contains($user->id);
+            return $user->hasPermission('leave_groups') && $group->members->contains($user->id) && $group->leader->id !== $user->id;
+        });
+        Gate::define('destroy_application', function ($user, $applicationId) {
+            $application = Application::findOrFail($applicationId);
+
+            return $application->user->id == $user->id && $application->status === "pending";
         });
     }
 }

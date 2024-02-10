@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Group;
 use App\Models\User;
 use Carbon\Carbon;
@@ -16,6 +17,12 @@ class GroupController extends Controller
     {
         $groups = Group::all();
         return view('dashboard.groups.index', compact('groups'));
+    }
+
+    public function indexPublic()
+    {
+        $groups = Group::all();
+        return view('groups.index', compact('groups'));
     }
 
     /**
@@ -50,6 +57,12 @@ class GroupController extends Controller
     {
         $group = Group::findOrFail($id);
         return view('dashboard.groups.show', compact('group'));
+    }
+
+    public function showPublic(string $id)
+    {
+        $group = Group::findOrFail($id);
+        return view('groups.show', compact('group'));
     }
 
     /**
@@ -123,6 +136,31 @@ class GroupController extends Controller
 
         // Válasz JSON formátumban az átalakított vezetőkkel
         return response()->json(['leaders' => $formattedLeaders]);
+    }
+
+    public function kickFromGroup($groupId, $userId)
+    {
+        if (!\Gate::allows('manage_group_members', $groupId)) {
+            return redirect()->back()->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+        }
+
+        $user = User::findOrFail($userId);
+        $group = Group::findOrFail($groupId);
+
+        // Ellenőrizzük, hogy a felhasználó valóban csatlakozott-e a csoportba
+        if (!$user->groups()->where('group_id', $groupId)->exists()) {
+            return redirect()->route('dashboard.groups.index')->with('error', 'A felhasználó nem tagja a csoportodnak!');
+        }
+
+        $application = Application::where('user_id', $user->id)->where('group_id', $group->id)->first();
+
+        // Kilépés a csoportból
+        $group->removeMember($user->id);
+        if ($application) {
+            $application->delete();
+        }
+
+        return redirect()->back()->with('success', 'Felhasználó eltávolítva a csoportodból!');
     }
 
 }

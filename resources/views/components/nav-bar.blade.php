@@ -9,6 +9,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">Főoldal</x-nav-link>
+                <x-nav-link href="{{ route('groups.index') }}" :active="request()->routeIs('groups.index')">Csoportok</x-nav-link>
             </ul>
             <span class="navbar-nav">
                 @auth
