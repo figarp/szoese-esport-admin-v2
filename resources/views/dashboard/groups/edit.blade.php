@@ -75,7 +75,7 @@
         }
 
         // AJAX kérés a vezetők kereséséhez
-        fetch(`/search-leaders?query=${searchQuery}`)
+        fetch(`/dashboard/search-leaders?query=${searchQuery}`)
             .then(response => response.json())
             .then(data => {
                 const leaders = data.leaders;

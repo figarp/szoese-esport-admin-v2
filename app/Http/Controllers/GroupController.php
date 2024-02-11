@@ -2,57 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewApplicationMail;
 use App\Models\Application;
 use App\Models\Group;
+use App\Models\Image;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Mail;
 
 class GroupController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $groups = Group::all();
-        return view('dashboard.groups.index', compact('groups'));
+        try {
+            $groups = Group::all();
+            return view('dashboard.groups.index', compact('groups'));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
     }
 
     public function indexPublic()
     {
-        $groups = Group::all();
-        return view('groups.index', compact('groups'));
+        try {
+            $groups = Group::all();
+            return view('groups.index', compact('groups'));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('dashboard.groups.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
             'game' => 'required|unique:groups',
-            'leader_id' => 'required'
+            'leader_id' => 'required',
+            'image' => 'required|image|dimensions:min_width=128,min_height=128,max_width=512,max_height=512',
         ]);
 
-        $group = Group::create($request->all());
-        $group->addMember($request->leader_id);
+        try {
+            $path = $request->file('image')->store('public/images');
 
-        return redirect()->route('dashboard.groups.index')
-            ->with('success', 'Új csoport sikeresen létrehozva!');
+            $image = new Image();
+            $image->path = $path;
+            $image->created_by = auth()->user()->id;
+            $image->save();
+
+            $group = new Group();
+            $group->game = $request->game;
+            $group->leader_id = $request->leader_id;
+            $group->description = $request->description;
+            $group->image_id = $image->id;
+            $group->save();
+
+            $group->addMember($request->leader_id);
+
+            return redirect()->route('dashboard.groups.index')->with('success', 'Új csoport sikeresen létrehozva!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $group = Group::findOrFail($id);
@@ -65,20 +82,12 @@ class GroupController extends Controller
         return view('groups.show', compact('group'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-
     public function edit(string $id)
     {
         $group = Group::findOrFail($id);
         return view('dashboard.groups.edit', compact('group'));
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(string $id)
     {
         $group = Group::findOrFail($id);
@@ -86,81 +95,97 @@ class GroupController extends Controller
             'game' => 'required|unique:groups,game,' . $group->id,
         ]);
 
-        if (request('leader_id') != $group->leader->id) {
-            $errors = $group->setLeader(request('leader_id'));
-            if (strlen($errors) > 0) {
-                return redirect()->route('dashboard.groups.index')->with('error', $errors);
+        try {
+            if (request('leader_id') != $group->leader->id) {
+                $errors = $group->setLeader(request('leader_id'));
+                if (strlen($errors) > 0) {
+                    return redirect()->route('dashboard.groups.index')->with('error', $errors);
+                }
             }
+
+            $group->update(request()->all());
+
+            return redirect()->route('dashboard.groups.index')->with('success', 'Csoport sikeresen frissítve!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
-
-        $group->update(request()->all());
-
-        return redirect()->route('dashboard.groups.index')
-            ->with('success', 'Csoport sikeresen frissítve!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        $group = Group::findOrFail($id);
+        try {
+            $group = Group::findOrFail($id);
 
-        $group->removeAllMembers();
+            $group->removeAllMembers();
 
-        $group->delete();
+            $group->delete();
 
-        return redirect()->route('dashboard.groups.index')
-            ->with('success', 'Csoport törölve!');
+            return redirect()->route('dashboard.groups.index')
+                ->with('success', 'Csoport törölve!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
     }
-
 
     public function searchLeaders(Request $request)
     {
-        $query = $request->input('query');
+        try {
+            $query = $request->input('query');
 
-        // Keresés a teljes név alapján
-        $leaders = User::whereRaw("CONCAT(last_name, ' ', first_name) LIKE '%" . $query . "%'")->get();
+            $leaders = User::whereRaw("CONCAT(last_name, ' ', first_name) LIKE '%" . $query . "%'")->get();
 
-        // Átalakítjuk a vezetők tömbjét a megfelelő formátumba
-        $formattedLeaders = $leaders->map(function ($leader) {
-            // Összefűzzük a first_name és last_name változókat egy szóközzel
-            $fullName = $leader->last_name . ' ' . $leader->first_name;
+            $formattedLeaders = $leaders->map(function ($leader) {
+                $fullName = $leader->last_name . ' ' . $leader->first_name;
 
-            // Visszaadjuk csak az "id" és "full_name" értékeket JSON formátumban
-            return [
-                'id' => $leader->id,
-                'full_name' => $fullName,
-            ];
-        });
+                return [
+                    'id' => $leader->id,
+                    'full_name' => $fullName,
+                ];
+            });
 
-        // Válasz JSON formátumban az átalakított vezetőkkel
-        return response()->json(['leaders' => $formattedLeaders]);
+            return response()->json(['leaders' => $formattedLeaders]);
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
     }
 
     public function kickFromGroup($groupId, $userId)
     {
-        if (!\Gate::allows('manage_group_members', $groupId)) {
-            return redirect()->back()->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+        try {
+            if (!\Gate::allows('manage_group_members', $groupId)) {
+                return redirect()->back()->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+            }
+
+            $user = User::findOrFail($userId);
+            $group = Group::findOrFail($groupId);
+
+            if (!$user->groups()->where('group_id', $groupId)->exists()) {
+                return redirect()->route('dashboard.groups.index')->with('error', 'A felhasználó nem tagja a csoportodnak!');
+            }
+
+            $application = Application::where('user_id', $user->id)->where('group_id', $group->id)->first();
+
+            $group->removeMember($user->id);
+            if ($application) {
+                $application->delete();
+            }
+
+            $title = 'Kedves ' . $user->first_name . '!';
+            $body = '
+                <p>Értesítelek, hogy a(z) <strong>' . $group->game . '</strong> nevű csoportból el lettél távolítva egy adminisztrátor által.</p>
+            ';
+
+            $data = [
+                'subject' => 'Értesítés - SZoESE E-Sport',
+                'title' => $title,
+                'body' => $body,
+            ];
+
+            Mail::to($user)->send(new NewApplicationMail($data));
+
+            return redirect()->back()->with('success', 'Felhasználó eltávolítva a csoportodból!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
-
-        $user = User::findOrFail($userId);
-        $group = Group::findOrFail($groupId);
-
-        // Ellenőrizzük, hogy a felhasználó valóban csatlakozott-e a csoportba
-        if (!$user->groups()->where('group_id', $groupId)->exists()) {
-            return redirect()->route('dashboard.groups.index')->with('error', 'A felhasználó nem tagja a csoportodnak!');
-        }
-
-        $application = Application::where('user_id', $user->id)->where('group_id', $group->id)->first();
-
-        // Kilépés a csoportból
-        $group->removeMember($user->id);
-        if ($application) {
-            $application->delete();
-        }
-
-        return redirect()->back()->with('success', 'Felhasználó eltávolítva a csoportodból!');
     }
-
 }

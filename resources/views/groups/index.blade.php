@@ -28,8 +28,16 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="d-flex align-items-center gap-4 mb-3">
-                        <img src="{{ Vite::asset('resources/images/szoese_esport_logo_128.png') }}" alt=""
-                            class="img-fluid">
+                        <div class="imageContrainer">
+                            @if ($group->image_id === null)
+                                <img loading="lazy"
+                                    src="{{ Vite::asset('resources/images/szoese_esport_logo_128.png') }}"
+                                    alt="" class="img-fluid">
+                            @else
+                                <img loading="lazy" src="{{ Storage::url($group->image->path) }}" alt=""
+                                    class="img-fluid">
+                            @endif
+                        </div>
                         <div>
                             <h4 class="card-title">{{ $group->game }}</h4>
                             <h6 class="card-subtitle mb-2 text-muted">Csoportvezető: {{ $group->leader->full_name() }}
@@ -40,7 +48,7 @@
                         {!! nl2br($group->description) !!}
                     </p>
                     <div class="d-flex justify-content-end mt-2 mb-1">
-                        <a href="{{ route('groups.show', $group->id) }}" class="card-link">Bővebben</a>
+                        <a href="{{ route('groups.show', $group->id) }}" class="btn btn-info">Bővebben</a>
                     </div>
                 </div>
                 <div class="card-footer text-muted">

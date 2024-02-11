@@ -24,6 +24,7 @@ return new class extends Migration {
             ['name' => 'manage_group_members', 'description' => 'Csoport tagjainak kezelése'],
             ['name' => 'join_groups', 'description' => 'Csoportokhoz csatlakozás'],
             ['name' => 'leave_groups', 'description' => 'Csoportokból kilépés'],
+            ['name' => 'manage_posts', 'description' => 'Bejegyzések kezelése'],
         ]);
     }
 

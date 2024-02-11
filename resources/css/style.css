@@ -289,3 +289,18 @@ datalist option:checked {
 p {
     max-width: 120ch;
 }
+
+.indexImg {
+    max-width: 250px;
+    border-radius: 0.8rem;
+    margin: 1rem;
+}
+
+.imageContrainer {
+    max-width: 128px;
+}
+
+.imageContrainer img {
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+}

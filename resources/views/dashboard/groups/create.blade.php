@@ -6,7 +6,7 @@
     <section class="dashboard_card">
         <x-go-back-button href="{{ route('dashboard.groups.index') }}" />
         <div class="max-w-xl">
-            <form method="POST" action="{{ route('dashboard.groups.store') }}">
+            <form method="POST" action="{{ route('dashboard.groups.store') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">
@@ -19,6 +19,15 @@
                     <x-input-label for="description" :value="__('Ismertető')" />
                     <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                     <x-input-error :messages="$errors->get('description')" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="image" class="form-label mt-4">Kép</label>
+                    <input class="form-control @error('image') is-invalid @enderror" type="file" id="image"
+                        name="image">
+                    @error('image')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="form-group mb-3">
@@ -57,7 +66,7 @@
         }
 
         // AJAX kérés a vezetők kereséséhez
-        fetch(`/search-leaders?query=${searchQuery}`)
+        fetch(`/dashboard/search-leaders?query=${searchQuery}`)
             .then(response => response.json())
             .then(data => {
                 const leaders = data.leaders;

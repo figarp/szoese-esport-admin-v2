@@ -15,8 +15,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        return view('dashboard.admin.index', compact('users'));
+        try {
+            $users = User::all();
+            return view('dashboard.admin.index', compact('users'));
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
     }
 
     /**
@@ -32,9 +36,7 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        // Felhasználó keresése az azonosító alapján
         $user = User::findOrFail($id);
-        // Felhasználó adatainak átadása a szerkesztési nézetnek
         return view('dashboard.admin.user_management.edit-user', compact('user'));
     }
 
@@ -43,14 +45,15 @@ class UserController extends Controller
      */
     public function update($id)
     {
-        // Validálás
-        $user = User::findOrFail($id);
+        try {
+            $user = User::findOrFail($id);
 
-        // Bejegyzés frissítése
-        $user->update(request()->all());
+            $user->update(request()->all());
 
-        return redirect()->route('dashboard.admin.userManagement.edit', $user->id)
-            ->with('success', 'Sikeres frissítés');
+            return redirect()->route('dashboard.admin.userManagement.edit', $user->id)->with('success', 'Sikeres frissítés');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
+        }
     }
     /**
      * Remove the specified resource from storage.
@@ -62,46 +65,51 @@ class UserController extends Controller
 
     public function joinGroup($groupId)
     {
-        if (!Gate::allows('join_group', $groupId)) {
-            return redirect()->route('dashboard.groups.index')->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+        try {
+            if (!Gate::allows('join_group', $groupId)) {
+                return redirect()->route('dashboard.groups.index')->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+            }
+
+            $user = auth()->user();
+            $group = Group::findOrFail($groupId);
+
+            // Ellenőrizzük, hogy a felhasználó már csatlakozott-e a csoportba
+            if ($user->groups()->where('group_id', $groupId)->exists()) {
+                return redirect()->route('dashboard.groups.index')->with('error', 'Már csatlakoztál ebbe a csoportba!');
+            }
+
+            $group->addMember($user->id);
+
+            return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen csatlakoztál a csoportba!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
-
-        $user = auth()->user();
-        $group = Group::findOrFail($groupId);
-
-        // Ellenőrizzük, hogy a felhasználó már csatlakozott-e a csoportba
-        if ($user->groups()->where('group_id', $groupId)->exists()) {
-            return redirect()->route('dashboard.groups.index')->with('error', 'Már csatlakoztál ebbe a csoportba!');
-        }
-
-        $group->addMember($user->id);
-
-        return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen csatlakoztál a csoportba!');
     }
-
 
     public function leaveGroup($groupId)
     {
-        if (!Gate::allows('leave_group', $groupId)) {
-            return redirect()->route('dashboard.groups.index')->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+        try {
+            if (!Gate::allows('leave_group', $groupId)) {
+                return redirect()->route('dashboard.groups.index')->with('error', 'Nincs jogosultságod ehhez a tevékenységez!');
+            }
+
+            $user = auth()->user();
+            $group = Group::findOrFail($groupId);
+
+            if (!$user->groups()->where('group_id', $groupId)->exists()) {
+                return redirect()->route('dashboard.groups.index')->with('error', 'Nem vagy tagja ennek a csoportnak!');
+            }
+
+            $application = Application::where('user_id', $user->id)->where('group_id', $group->id)->first();
+
+            $group->removeMember($user->id);
+            if ($application) {
+                $application->delete();
+            }
+
+            return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen kiléptél a csoportból!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
-
-        $user = auth()->user();
-        $group = Group::findOrFail($groupId);
-
-        // Ellenőrizzük, hogy a felhasználó valóban csatlakozott-e a csoportba
-        if (!$user->groups()->where('group_id', $groupId)->exists()) {
-            return redirect()->route('dashboard.groups.index')->with('error', 'Nem vagy tagja ennek a csoportnak!');
-        }
-
-        $application = Application::where('user_id', $user->id)->where('group_id', $group->id)->first();
-
-        // Kilépés a csoportból
-        $group->removeMember($user->id);
-        if ($application) {
-            $application->delete();
-        }
-
-        return redirect()->route('dashboard.groups.index')->with('success', 'Sikeresen kiléptél a csoportból!');
     }
 }

@@ -55,5 +55,8 @@ class AuthServiceProvider extends ServiceProvider
 
             return $application->user->id == $user->id && $application->status === "pending";
         });
+        Gate::define('manage_posts', function ($user) {
+            return $user->hasPermission('manage_posts');
+        });
     }
 }

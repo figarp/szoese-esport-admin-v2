@@ -84,6 +84,16 @@
             </div>
         </section>
     </div>
+
+    <form action="{{route('email.send.newApplication')}}" method="post">
+        @csrf
+        <input type="text" hidden value="2" id="applicantId" name="applicantId">
+        <input type="text" hidden value="1" id="leaderId" name="leaderId">
+        <input type="text" hidden value="1" id="groupId" name="groupId">
+
+        <button>Send</button>
+    </form>
+
     <x-footer />
 </body>
 

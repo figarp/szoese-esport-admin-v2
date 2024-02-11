@@ -30,15 +30,13 @@
                                 <td>{{ $group->shortDescription() }}</td>
                                 <td>{{ $group->membersCount() }}</td>
                                 <td>
-                                    <div class="d-flex gap-1">
+                                    <div class="d-flex gap-1 align-items-center">
                                         @can('join_group', $group->id)
                                             <form action="{{ route('application.store') }}" method="POST">
                                                 @csrf
-                                                <input type="text" id="group_id" name="group_id"
-                                                    value="{{ $group->id }}" hidden>
-                                                <input type="text" id="user_id" name="user_id"
-                                                    value="{{ Auth::user()->id }}" hidden>
-                                                <button class="btn btn-success" title="Csatlakozás">
+                                                <input type="text" id="group_id" name="group_id" value="{{ $group->id }}" hidden>
+                                                <input type="text" id="user_id" name="user_id" value="{{ Auth::user()->id }}" hidden>
+                                                <button type="submit" id="submitButton" class="btn btn-success" title="Csatlakozás">
                                                     <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
                                             </form>
@@ -46,7 +44,7 @@
                                         @can('leave_group', $group->id)
                                             <form action="{{ route('groups.leave', $group->id) }}" method="POST">
                                                 @csrf
-                                                <button class="btn btn-danger" title="Kilépés">
+                                                <button type="submit" class="btn btn-danger" title="Kilépés">
                                                     <i class="fa-solid fa-right-from-bracket"></i>
                                                 </button>
                                             </form>
@@ -54,7 +52,7 @@
                                         @can('edit_group', $group->id)
                                             <form action="{{ route('dashboard.groups.edit', $group->id) }}" method="GET">
                                                 @csrf
-                                                <button class="btn btn-primary" title="Szerkesztés">
+                                                <button type="submit" class="btn btn-primary" title="Szerkesztés">
                                                     <i class="fa-solid fa-pen"></i>
                                                 </button>
                                             </form>
@@ -82,7 +80,7 @@
                                                             class="is-invalid" />
                                                     </div>
 
-                                                    <button class="btn btn-danger" title="Törlés"
+                                                    <button type="submit" class="btn btn-danger" title="Törlés"
                                                         id="deleteGroup{{ $group->id }}Btn" disabled>
                                                         <i class="fa-solid fa-trash"></i>
                                                         <span>Törlés</span>
@@ -101,6 +99,10 @@
             <script type="text/javascript">
                 $(document).ready(function() {
                     loadDataTable();
+
+                    $('form').submit(function(){
+                        $(this).find('button[type="submit"]').prop('disabled', true);
+                    });
                 });
 
                 function checkGroupName(inputId, groupName, btn) {

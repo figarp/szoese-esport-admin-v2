@@ -19,16 +19,19 @@ class RolePermissionsSeeder extends Seeder
             ['role_id' => 1, 'permission_id' => 2], // edit_group
             ['role_id' => 1, 'permission_id' => 3], // delete_group
             ['role_id' => 1, 'permission_id' => 4], // manage_group_members
+            ['role_id' => 1, 'permission_id' => 7], // manage_posts
 
             // Vezetoseg (2)
             ['role_id' => 2, 'permission_id' => 1], // create_group
             ['role_id' => 2, 'permission_id' => 2], // edit_group
             ['role_id' => 2, 'permission_id' => 3], // delete_group
             ['role_id' => 2, 'permission_id' => 4], // manage_group_members
+            ['role_id' => 2, 'permission_id' => 7], // manage_posts
 
             // Csoportvezetok (3)
             ['role_id' => 3, 'permission_id' => 2], // edit_group
             ['role_id' => 3, 'permission_id' => 4], // manage_group_members
+            ['role_id' => 3, 'permission_id' => 7], // manage_posts
 
             // Tagok (4)
 

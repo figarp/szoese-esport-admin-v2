@@ -10,16 +10,9 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');
-            $table->text('slug');
+        Schema::table('groups', function (Blueprint $table) {
             $table->unsignedBigInteger('image_id')->nullable();
-            $table->unsignedBigInteger('author_id');
-            $table->enum('visibility', ['public', 'private', 'privateForGroup']);
-            $table->timestamps();
 
-            $table->foreign('author_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreign('image_id')->references('id')->on('images')->nullOnDelete();
         });
     }
@@ -29,6 +22,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::table('groups', function (Blueprint $table) {
+            //
+        });
     }
 };

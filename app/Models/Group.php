@@ -137,5 +137,8 @@ class Group extends Model
         return Application::where('group_id', $this->id)->get();
     }
 
-
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
 }

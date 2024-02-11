@@ -45,7 +45,7 @@ class Application extends Model
     {
         switch ($this->status) {
             case 'pending':
-                return '<span class="text-warning">Elfogadásra vár...</span>';
+                return '<span class="text-secondary">Függőben...</span>';
             case 'accepted':
                 return '<span class="text-success">Elfogadva</span>';
             case 'rejected':
