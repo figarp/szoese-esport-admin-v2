@@ -7,6 +7,7 @@ use App\Models\Application;
 use App\Models\Group;
 use App\Models\Image;
 use App\Models\User;
+use App\Notifications\KickedOutNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mail;
@@ -170,18 +171,7 @@ class GroupController extends Controller
                 $application->delete();
             }
 
-            $title = 'Kedves ' . $user->first_name . '!';
-            $body = '
-                <p>Értesítelek, hogy a(z) <strong>' . $group->game . '</strong> nevű csoportból el lettél távolítva egy adminisztrátor által.</p>
-            ';
-
-            $data = [
-                'subject' => 'Értesítés - SZoESE E-Sport',
-                'title' => $title,
-                'body' => $body,
-            ];
-
-            Mail::to($user)->send(new NewApplicationMail($data));
+            $user->notify(new KickedOutNotification($group, $user));
 
             return redirect()->back()->with('success', 'Felhasználó eltávolítva a csoportodból!');
         } catch (\Throwable $th) {

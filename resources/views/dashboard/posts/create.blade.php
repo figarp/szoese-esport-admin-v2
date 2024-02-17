@@ -33,6 +33,22 @@
                     @enderror
                 </div>
 
+                <div class="form-group mb-3">
+                    <label for="visibility" class="form-label mt-4">Láthatóság</label>
+                    <select class="form-select" id="visibility" name="visibility">
+                        <option value="0" selected>Mindenki</option>
+                        @foreach ($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->game }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="important" name="important">
+                    <label class="form-check-label" for="important">
+                        FONTOS (email-es értesítők kiküldése)
+                    </label>
+                </div>
 
                 <div class="d-flex justify-content-between">
                     <x-secondary-button>

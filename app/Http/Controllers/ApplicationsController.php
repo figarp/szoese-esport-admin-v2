@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\NewApplicationMail;
 use App\Models\Application;
 use App\Models\Group;
 use App\Models\User;
-use Mail;
+use App\Notifications\ApplicationAcceptedNotification;
+use App\Notifications\ApplicationNotification;
+use App\Notifications\ApplicationRejectedNotification;
 
 class ApplicationsController extends Controller
 {
@@ -24,11 +25,12 @@ class ApplicationsController extends Controller
             }
 
             $group->addMember($user->id);
-
-            return redirect()->back()->with('success', 'A jelentkezés elfogadva!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
+
+        $application->user->notify(new ApplicationAcceptedNotification($application));
+        return redirect()->back()->with('success', 'A jelentkezés elfogadva!');
     }
 
     public function reject($id)
@@ -36,51 +38,26 @@ class ApplicationsController extends Controller
         try {
             $application = Application::findOrFail($id);
             $application->update(['status' => 'rejected']);
-
-            return redirect()->back()->with('success', 'A jelentkezés elutasítva!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
+
+        $application->user->notify(new ApplicationRejectedNotification($application));
+        return redirect()->back()->with('success', 'A jelentkezés elutasítva!');
     }
 
     public function store()
     {
         try {
             $application = Application::create(request()->all());
-
-            $applicant = User::findOrFail($application->user_id);
-            $group = Group::findOrFail($application->group->id);
-            $leader = User::findOrFail($application->group->leader->id);
-
-            $title = 'Kedves ' . $leader->first_name . '!';
-            $body = '
-                <p>Új jelentkezés érkezett a(z) <strong>' . $group->game . '</strong> csoportodba.</p>
-
-                <h3>A Jelentkező adatai: </h3>
-                <strong>Név</strong>: ' . $applicant->full_name() . '
-                <strong>Felhasználónév</strong>: ' . $applicant->username . '
-                <strong>Email cím</strong>: ' . $applicant->email . '
-                <strong>Jelentkezés dátuma</strong>: ' . $application->created_at . '
-
-                <p>Vedd fel a kapcsolatot a jelentkezővel az email címén keresztül, majd a weboldalon fogadd el vagy utasítsd el a jelentkezését!</p>
-            ';
-
-            $data = [
-                'subject' => "Új Jelentkezés - SZoESE E-Sport",
-                'applicant' => $applicant,
-                'leader' => $leader,
-                'group' => $group,
-                'application' => $application,
-                'title' => $title,
-                'body' => $body,
-            ];
-
-            Mail::to($data["leader"])->send(new NewApplicationMail($data));
-
-            return redirect()->back()->with('success', 'Feladva! A jelentkezésed módosíthatod a Jelentkezések fül alatt!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
+
+        $delay = now()->addMinutes(1);
+        $application->group->leader->notify((new ApplicationNotification($application))->delay($delay));
+
+        return redirect()->back()->with('success', 'Feladva! A jelentkezésed módosíthatod a Jelentkezések fül alatt!');
     }
 
     public function index()

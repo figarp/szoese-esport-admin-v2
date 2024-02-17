@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->text('slug');
             $table->unsignedBigInteger('image_id')->nullable();
             $table->unsignedBigInteger('author_id');
-            $table->enum('visibility', ['public', 'private', 'privateForGroup']);
+            $table->integer('visibility');
             $table->timestamps();
 
             $table->foreign('author_id')->references('id')->on('users')->cascadeOnDelete();

@@ -31,8 +31,6 @@ Route::get('/', function () {
 Route::get('/groups', [GroupController::class, 'indexPublic'])->name('groups.index');
 Route::get('/groups/{id}', [GroupController::class, 'showPublic'])->name('groups.show');
 
-Route::post('/email/send/newApplication', [MailController::class, 'sendNewApplicationMail'])->name('email.send.newApplication');
-
 
 // ----- Vezetosegi Útvonalak -----
 Route::middleware(['auth', 'verified', 'checkRole:vendeg,tag,csoportvezeto,vezetoseg'])->group(function () {
@@ -43,10 +41,15 @@ Route::middleware(['auth', 'verified', 'checkRole:vendeg,tag,csoportvezeto,vezet
     // Csoport törlése
     Route::delete('/dashboard/groups/{id}', [GroupController::class, 'destroy'])->name('dashboard.groups.destroy');
 
+    // Bejegyzés létrehozása
     Route::get('/dashboard/posts/create', [PostsController::class, 'create'])->name('dashboard.posts.create');
     Route::post('/dashboard/posts', [PostsController::class, 'store'])->name('dashboard.posts.store');
+
+    // Bejegyzés módosítása
     Route::get('/dashboard/posts/{id}/edit', [PostsController::class, 'edit'])->name('dashboard.posts.edit');
     Route::put('/dashboard/posts/{id}', [PostsController::class, 'update'])->name('dashboard.posts.update');
+
+    // Bejegyzés törlése
     Route::delete('/dashboard/posts/{id}', [PostsController::class, 'destroy'])->name('dashboard.posts.destroy');
 });
 
@@ -55,8 +58,9 @@ Route::middleware(['auth', 'verified', 'checkRole:vendeg,tag,csoportvezeto'])->g
     // Csoport szerkesztése
     Route::get('/dashboard/groups/{id}/edit', [GroupController::class, 'edit'])->name('dashboard.groups.edit');
     Route::put('/dashboard/groups/{id}', [GroupController::class, 'update'])->name('dashboard.groups.update');
-    Route::delete('/dashboard/groups/{group_id}/kick/{user_id}', [GroupController::class, 'kickFromGroup'])->name('dashboard.groups.kick');
 
+    // Tagok kezelése
+    Route::delete('/dashboard/groups/{group_id}/kick/{user_id}', [GroupController::class, 'kickFromGroup'])->name('dashboard.groups.kick');
     Route::post('/dashboard/applications/{id}/accept', [ApplicationsController::class, 'accept'])->name('application.accept');
     Route::post('/dashboard/applications/{id}/reject', [ApplicationsController::class, 'reject'])->name('application.reject');
     Route::post('/dashboard/applications', [ApplicationsController::class, 'store'])->name('application.store');
@@ -78,7 +82,7 @@ Route::middleware(['auth', 'verified', 'checkRole:vendeg'])->group(function () {
     Route::delete('/dashboard/applications/{id}', [ApplicationsController::class, 'destroy'])->name('dashboard.application.destroy');
 
     Route::get('/dashboard/posts', [PostsController::class, 'index'])->name('dashboard.posts.index');
-    Route::get('/dashboard/posts/{id}', [PostsController::class, 'show'])->name('dashboard.posts.show');
+    // Route::get('/dashboard/posts/{id}', [PostsController::class, 'show'])->name('dashboard.posts.show');
 
     Route::get('/dashboard/images', [ImageController::class, 'index'])->name('images.index');
     Route::get('/dashboard/images/create', [ImageController::class, 'create'])->name('images.create');

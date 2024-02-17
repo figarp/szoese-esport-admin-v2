@@ -7,6 +7,14 @@
 
     <title>Csoportjaink - SZoESE E-Sport</title>
     <link rel="shortcut icon" href="{{ Vite::asset('resources/images/szoese_esport_logo_32.png') }}" type="image/x-icon">
+    <meta name="description"
+        content="A SZoESE E-Sport Szakosztályban több játékkal is foglalkozunk, ezeket játékoscsoportokba szerveztük.">
+    <meta property="og:title" content="Csoportjaink - SZoESE E-Sport">
+    <meta property="og:description"
+        content="A SZoESE E-Sport Szakosztályban több játékkal is foglalkozunk, ezeket játékoscsoportokba szerveztük.">
+    <meta property="og:image" content="{{ Vite::asset('resources/images/szoese_esport_logo_512.png') }}">
+    <meta property="og:url" content="https://esportszoese.hu/groups">
+    <meta property="og:type" content="website">
 
     <!-- Fonts -->
     <script src="https://kit.fontawesome.com/18c03d310a.js" crossorigin="anonymous"></script>

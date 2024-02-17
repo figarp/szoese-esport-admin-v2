@@ -7,6 +7,12 @@
 
     <title>{{ $group->game }} Csoport - SZoESE E-Sport</title>
     <link rel="shortcut icon" href="{{ Vite::asset('resources/images/szoese_esport_logo_32.png') }}" type="image/x-icon">
+    <meta name="description" content="{{ $group->description }}">
+    <meta property="og:title" content="{{ $group->game }} Csoport - SZoESE E-Sport">
+    <meta property="og:description" content="{{ $group->description }}">
+    <meta property="og:image" content="{{ Storage::url($group->image->path) }}">
+    <meta property="og:url" content="https://esportszoese.hu/groups/{{ $group->id }}">
+    <meta property="og:type" content="website">
 
     <!-- Fonts -->
     <script src="https://kit.fontawesome.com/18c03d310a.js" crossorigin="anonymous"></script>

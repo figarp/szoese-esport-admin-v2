@@ -58,5 +58,9 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage_posts', function ($user) {
             return $user->hasPermission('manage_posts');
         });
+        Gate::define('view-post', function ($user, $post) {
+            return $post->visibility === 0 || $user->groups->contains($post->group_id);
+        });
+
     }
 }

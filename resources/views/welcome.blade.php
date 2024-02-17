@@ -7,6 +7,16 @@
 
     <title>SZoESE E-Sport Főoldal</title>
     <link rel="shortcut icon" href="{{ Vite::asset('resources/images/szoese_esport_logo_32.png') }}" type="image/x-icon">
+    <meta name="description"
+        content="A SzoESE E-sport a Szombathelyi Egyetemi Sportegyedület szakosztálya. Célunk a hallgatók és az érdeklődők számára lehetőséget biztosítani az e-sporttal kapcsolatos tevékenységekkel való foglalkozásra, versenyeken való részvételre és a közösség építésére. Főként PC-s versenyjátékokkal foglalkozunk, de más platformokon is nyitottak vagyunk a versenyekre és közös játékra. A szakosztály rendszeresen szervez versenyeket és közösségi eseményeket, valamint kapcsolatot tart más e-sport szervezetekkel is a kapcsolatok bővítése és tapasztalatcsere érdekében.">
+    <link rel="canonical" href="https://esportszoese.hu/" />
+    <meta property="og:title" content="SZoESE E-Sport">
+    <meta property="og:description"
+        content="A SzoESE E-sport a Szombathelyi Egyetemi Sportegyedület szakosztálya. Célunk a hallgatók és az érdeklődők számára lehetőséget biztosítani az e-sporttal kapcsolatos tevékenységekkel való foglalkozásra, versenyeken való részvételre és a közösség építésére. Főként PC-s versenyjátékokkal foglalkozunk, de más platformokon is nyitottak vagyunk a versenyekre és közös játékra. A szakosztály rendszeresen szervez versenyeket és közösségi eseményeket, valamint kapcsolatot tart más e-sport szervezetekkel is a kapcsolatok bővítése és tapasztalatcsere érdekében.">
+    <meta property="og:image" content="{{ Vite::asset('resources/images/szoese_esport_logo_512.png') }}">
+    <meta property="og:url" content="https://esportszoese.hu/">
+    <meta property="og:type" content="website">
+
 
     <!-- Fonts -->
     <script src="https://kit.fontawesome.com/18c03d310a.js" crossorigin="anonymous"></script>
@@ -84,15 +94,6 @@
             </div>
         </section>
     </div>
-
-    <form action="{{route('email.send.newApplication')}}" method="post">
-        @csrf
-        <input type="text" hidden value="2" id="applicantId" name="applicantId">
-        <input type="text" hidden value="1" id="leaderId" name="leaderId">
-        <input type="text" hidden value="1" id="groupId" name="groupId">
-
-        <button>Send</button>
-    </form>
 
     <x-footer />
 </body>
