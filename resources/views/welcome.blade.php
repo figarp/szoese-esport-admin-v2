@@ -48,7 +48,7 @@
                             Amennyiben kíváncsi vagy a tevékenységünkre, olvasd el a <a
                                 href="#about_us">bemutatkozásunkat</a>! 😉<br>
                             Ha készen állsz a csatlakozásra, <a href="{{ asset('register') }}">regisztrálj</a> az
-                            oldalra, majd töltsd ki a <a href="#">jelentkezési kérdőívet</a>!
+                            oldalra, majd böngéssz a játékaink között és csatlakozz a szimpatikus csoportokhoz!
                         </p>
                     </blockquote>
                 </figure>
@@ -82,14 +82,15 @@
                 <p>
                     A szakosztály különböző játékokra van felbontva, ezeket <strong>Játékoscsoportoknak</strong>
                     hívjuk, amikért a
-                    kinevezett <strong>Csoportvezetők</strong> felelnek. <a href="#">A játékoscsoportokat ide
+                    kinevezett <strong>Csoportvezetők</strong> felelnek. <a href="{{ route('groups.index') }}">A
+                        játékoscsoportokat ide
                         kattitva lehet megtekinteni!</a>
                 </p>
                 <p>
                     Az oldalon regisztrációt követően lehetőség van jelentkezni több csoportba is. Amennyiben
-                    legalább 1 csoport elfogadta a jelentkezést, tag lesz az illető. Fontos megjegyezni, hogy tag csak
+                    legalább 1 csoport elfogadta a jelentkezést, tag lesz belőled! Fontos megjegyezni, hogy tag csak
                     az egyetemünk jelenlegi
-                    vagy volt hallgatója lehet. Külsős jelentkezések külön elbíráláson esnek át.
+                    vagy volt hallgatója lehet. Külsős jelentkezők egyéni elbíráláson esnek át.
                 </p>
             </div>
         </section>
