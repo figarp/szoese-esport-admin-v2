@@ -46,7 +46,7 @@
                                     <p class="card-text">{!! nl2br($post->slug) !!}</p>
                                 </div>
                             </div>
-                            @if ($post->image->path)
+                            @if ($post->image)
                                 <img src="{{ Storage::url($post->image->path) }}" alt="" class="indexImg">
                             @endif
                         </div>
