@@ -37,7 +37,6 @@
     </main>
     <footer class="mt-5"></footer>
 
-    @include('includes._scripts')
     @include('includes._notifications')
 </body>
 
