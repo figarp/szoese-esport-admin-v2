@@ -45,23 +45,26 @@ class PostsController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:2500',
-            'image' => 'required|image|mimes:jpeg,png,jpg',
+            'image' => 'image|mimes:jpeg,png,jpg',
         ]);
 
         $post = null;
 
         try {
-            $path = $request->file('image')->store('public/images');
+            $image = null;
+            if ($request->file('image')) {
+                $path = $request->file('image')->store('public/images');
 
-            $image = new Image();
-            $image->path = $path;
-            $image->created_by = auth()->user()->id;
-            $image->save();
+                $image = new Image();
+                $image->path = $path;
+                $image->created_by = auth()->user()->id;
+                $image->save();
+            }
 
             $post = new Post();
             $post->title = $request->title;
             $post->slug = $request->slug;
-            $post->image_id = $image->id;
+            $post->image_id = $image ? $image->id : null;
             $post->author_id = auth()->user()->id;
             $post->visibility = $request->visibility;
             $post->save();
