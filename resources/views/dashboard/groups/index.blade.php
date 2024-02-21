@@ -13,6 +13,18 @@
                         <span>Új Csoport</span>
                     </a>
                 @endcan
+                <p>
+                    Az E-Sport Szakosztály tevékenységi köre több játékra is kiterjed. Éppen ezért minden olyan játék
+                    köré,
+                    amiben valamilyen szinten képviseljük magunkat, játékoscsoportokat szervezünk. Ezeknek listáját és
+                    leírásait
+                    itt lehet megtekinteni, és itt tudsz választott csoportjaidhoz csatlakozni!
+                </p>
+                <p>
+                    Jelentkezést követően a kérvényed állapotát a <a
+                        href="{{ route('dashboard.application.index') }}">jelentkezések</a> menüpontban tudod nyomon
+                    követni. Ha meggondolnád magad, ugyan itt tudod visszamondani a jelentkezésed.
+                </p>
                 <table id="usersDataTable">
                     <thead>
                         <th>Játék</th>
@@ -34,9 +46,12 @@
                                         @can('join_group', $group->id)
                                             <form action="{{ route('application.store') }}" method="POST">
                                                 @csrf
-                                                <input type="text" id="group_id" name="group_id" value="{{ $group->id }}" hidden>
-                                                <input type="text" id="user_id" name="user_id" value="{{ Auth::user()->id }}" hidden>
-                                                <button type="submit" id="submitButton" class="btn btn-success" title="Csatlakozás">
+                                                <input type="text" id="group_id" name="group_id"
+                                                    value="{{ $group->id }}" hidden>
+                                                <input type="text" id="user_id" name="user_id"
+                                                    value="{{ Auth::user()->id }}" hidden>
+                                                <button type="submit" id="submitButton" class="btn btn-success"
+                                                    title="Csatlakozás">
                                                     <i class="fa-solid fa-right-to-bracket"></i>
                                                 </button>
                                             </form>
@@ -100,7 +115,7 @@
                 $(document).ready(function() {
                     loadDataTable();
 
-                    $('form').submit(function(){
+                    $('form').submit(function() {
                         $(this).find('button[type="submit"]').prop('disabled', true);
                     });
                 });

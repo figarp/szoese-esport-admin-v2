@@ -5,12 +5,13 @@
                 <h5>Hasznos linkek</h5>
                 <ul class="list-unstyled">
                     <li><a href="{{ route('home') }}">Főoldal</a></li>
+                    <li><a href="https://szoese.hu/" target="_blank">SZoESE</a></li>
                 </ul>
             </div>
             <div class="col-md-4">
                 <h5>Kapcsolat</h5>
                 <p>Cím: Szombathely, Károlyi Gáspár tér 4, 9700</p>
-                <p>Email: szoeseesport@gmail.com</p>
+                <p>Email: info@esportszoese.hu</p>
             </div>
             <div class="col-md-4">
                 <h5>Kövess minket!</h5>

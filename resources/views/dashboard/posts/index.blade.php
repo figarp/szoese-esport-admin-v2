@@ -8,6 +8,8 @@
             <section class="mt-5">
                 <h1 class="mb-3">Bejegyzések</h1>
 
+                <p>A szakosztály legújabb közleményei. Tagként itt olvashatod összegezve a csoportod bejegyzéseit.</p>
+
                 <form action="{{ route('dashboard.posts.index') }}" method="GET" class="mb-3">
                     <div class="input-group">
                         <input type="text" name="search" class="form-control" placeholder="Keresés..."

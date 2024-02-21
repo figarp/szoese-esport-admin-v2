@@ -32,6 +32,17 @@
     <x-nav-bar />
     <div class="container-lg mt-5">
         <h1 class="mb-4">Csoportjaink</h1>
+        <p>
+            Az E-Sport Szakosztály tevékenységi köre több játékra is kiterjed. Éppen ezért minden olyan játék köré,
+            amiben valamilyen szinten képviseljük magunkat, játékoscsoportokat szervezünk. Ezeknek listáját és leírásait
+            itt lehet megtekinteni.
+        </p>
+        <p>
+            Az oldalon <a href="{{ route('register') }}">regisztrációt</a> követően lehetőség van csatlakozni mindegyik
+            csoportba. Jelentkezést követően a kijelölt
+            <strong>csoportvezető</strong> felveszi veled a kapcsolatot, majd egy rövid beszélgetés utána már tag a
+            szakosztály tagja is leszel!
+        </p>
         @forelse ($groups as $group)
             <div class="card mb-3">
                 <div class="card-body">
