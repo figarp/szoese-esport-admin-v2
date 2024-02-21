@@ -29,6 +29,14 @@
     "file": "assets/szoese_esport_logo_512-hdg0lmzk.png",
     "src": "resources/images/szoese_esport_logo_512.png"
   },
+  "resources/images/szoese_esport_logo_sotet.png": {
+    "file": "assets/szoese_esport_logo_sotet-8yrXS0-d.png",
+    "src": "resources/images/szoese_esport_logo_sotet.png"
+  },
+  "resources/images/szoese_esport_logo_sotet_256.png": {
+    "file": "assets/szoese_esport_logo_sotet_256-_nW_JCg9.png",
+    "src": "resources/images/szoese_esport_logo_sotet_256.png"
+  },
   "resources/js/app.js": {
     "file": "assets/app-JzZ5dANH.js",
     "isEntry": true,

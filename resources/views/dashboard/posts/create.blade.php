@@ -23,7 +23,6 @@
                     @enderror
                 </div>
 
-
                 <div class="form-group mb-3">
                     <label for="image" class="form-label mt-4">Borítókép</label>
                     <input class="form-control @error('image') is-invalid @enderror" type="file" id="image"

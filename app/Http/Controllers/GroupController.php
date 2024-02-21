@@ -45,22 +45,26 @@ class GroupController extends Controller
         $request->validate([
             'game' => 'required|unique:groups',
             'leader_id' => 'required',
-            'image' => 'required|image|dimensions:min_width=128,min_height=128,max_width=512,max_height=512',
+            'image' => 'image|dimensions:min_width=128,min_height=128,max_width=512,max_height=512',
         ]);
 
         try {
-            $path = $request->file('image')->store('public/images');
+            $image = null;
 
-            $image = new Image();
-            $image->path = $path;
-            $image->created_by = auth()->user()->id;
-            $image->save();
+            if ($request->file('image')) {
+                $path = $request->file('image')->store('public/images');
+
+                $image = new Image();
+                $image->path = $path;
+                $image->created_by = auth()->user()->id;
+                $image->save();
+            }
 
             $group = new Group();
             $group->game = $request->game;
             $group->leader_id = $request->leader_id;
             $group->description = $request->description;
-            $group->image_id = $image->id;
+            $group->image_id = $image ? $image->id : null;
             $group->save();
 
             $group->addMember($request->leader_id);

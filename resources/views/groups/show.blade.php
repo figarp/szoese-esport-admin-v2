@@ -10,7 +10,7 @@
     <meta name="description" content="{{ $group->description }}">
     <meta property="og:title" content="{{ $group->game }} Csoport - SZoESE E-Sport">
     <meta property="og:description" content="{{ $group->description }}">
-    <meta property="og:image" content="{{ Storage::url($group->image->path) }}">
+    <meta property="og:image" content="{{ Vite::asset('resources/images/szoese_esport_logo_sotet_256.png') }}">
     <meta property="og:url" content="https://esportszoese.hu/groups/{{ $group->id }}">
     <meta property="og:type" content="website">
 
@@ -34,7 +34,7 @@
             <div class="d-flex flex-column justify-content-center align-items-center gap-5 mb-3">
                 <div class="imageContrainer">
                     @if ($group->image_id === null)
-                        <img src="{{ Vite::asset('resources/images/szoese_esport_logo_128.png') }}" alt=""
+                        <img src="{{ Vite::asset('resources/images/szoese_esport_logo_sotet_256.png') }}" alt=""
                             class="img-fluid">
                     @else
                         <img src="{{ Storage::url($group->image->path) }}" alt="" class="img-fluid">

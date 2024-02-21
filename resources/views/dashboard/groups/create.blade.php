@@ -21,14 +21,14 @@
                     <x-input-error :messages="$errors->get('description')" />
                 </div>
 
-                <div class="form-group mb-3">
+                {{-- <div class="form-group mb-3">
                     <label for="image" class="form-label mt-4">Kép</label>
                     <input class="form-control @error('image') is-invalid @enderror" type="file" id="image"
                         name="image">
                     @error('image')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
 
                 <div class="form-group mb-3">
                     <label for="leader">Vezető</label>

@@ -44,7 +44,7 @@ class PostsController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:2500|unique:posts',
+            'slug' => 'required|string|max:2500',
             'image' => 'required|image|mimes:jpeg,png,jpg',
         ]);
 
@@ -107,7 +107,7 @@ class PostsController extends Controller
 
         $request->validate([
             'title' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:posts,slug,' . $post->id,
+            'slug' => 'required|string|max:2500',
         ]);
 
         try {

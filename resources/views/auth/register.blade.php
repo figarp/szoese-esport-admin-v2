@@ -55,9 +55,15 @@
         </div>
 
         <div class="d-flex justify-content-between mt-4">
-            <a href="{{ route('login') }}">
-                {{ __('Regisztrált már?') }}
-            </a>
+            <div class="d-flex flex-column">
+                <a href="{{ route('login') }}">
+                    {{ __('Regisztrált már?') }}
+                </a>
+                <a href="https://drive.google.com/file/d/11AMPADhOlPULBmcJNltxclJlFpyy7ZL1/view?usp=drive_link"
+                    target="_blank">
+                    Adatkezelési tájékoztató
+                </a>
+            </div>
 
             <x-primary-button>
                 {{ __('Regisztráció') }}
