@@ -1,7 +1,10 @@
 <x-guest-layout>
     <h2>Hitelesítés</h2>
     <div class="mb-4 small text-muted">
-        {{ __('Köszönjük, a regisztrációt! Kérjük, hitelesítsd az e-mail címedet a linkre kattintva, amelyet elküldtünk a megadott címre! Ha nem kaptad meg az e-mailt, szívesen küldünk egy másikat.') }}
+        <p>Köszönjük, a regisztrációt! Kérjük, hitelesítsd az e-mail címedet a linkre kattintva, amelyet elküldtünk a
+            megadott címre! Ha nem kaptad meg az e-mailt, szívesen küldünk egy másikat.</p>
+        <p><strong>Mivel friss az oldal, az innen kapott emailek valószínűleg a spam mappában lesznek
+                megtalálhatóak!</strong></p>
     </div>
 
     <div class="mb-4 small text-muted">
