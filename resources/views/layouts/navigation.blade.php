@@ -49,17 +49,6 @@
                     <span class="text nav-text">Kijelentkezés</span>
                 </a>
             </li>
-            {{-- <li class="mode">
-                <div class="moon-sun">
-                    <i class="fa-solid fa-moon icon moon"></i>
-                    <i class="fa-solid fa-sun icon sun"></i>
-                </div>
-                <span class="mode-text text">Dark Mode</span>
-
-                <div class="toggle-switch">
-                    <span class="switch"></span>
-                </div>
-            </li> --}}
         </div>
     </div>
 </nav>
@@ -67,3 +56,18 @@
 <form method="post" action="{{ route('logout') }}" id="logoutForm" class="hidden">
     @csrf
 </form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        const logoutForm = document.getElementById('logoutForm');
+
+        if (logoutBtn && logoutForm) {
+            logoutBtn.addEventListener('click', function(event) {
+                event.preventDefault()
+
+                logoutForm.submit();
+            });
+        }
+    });
+</script>
