@@ -1,0 +1,37 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-ADZQ1SPE.css",
+    "isEntry": true,
+    "src": "resources/css/app.css"
+  },
+  "resources/css/style.css": {
+    "file": "assets/style-SiXR6BnE.css",
+    "isEntry": true,
+    "src": "resources/css/style.css"
+  },
+  "resources/images/szoese_esport_logo.png": {
+    "file": "assets/szoese_esport_logo-l0DfmquK.png",
+    "src": "resources/images/szoese_esport_logo.png"
+  },
+  "resources/images/szoese_esport_logo_128.png": {
+    "file": "assets/szoese_esport_logo_128-HBjnsPbS.png",
+    "src": "resources/images/szoese_esport_logo_128.png"
+  },
+  "resources/images/szoese_esport_logo_256.png": {
+    "file": "assets/szoese_esport_logo_256-EzJfSx9c.png",
+    "src": "resources/images/szoese_esport_logo_256.png"
+  },
+  "resources/images/szoese_esport_logo_32.png": {
+    "file": "assets/szoese_esport_logo_32-OYjUhk7b.png",
+    "src": "resources/images/szoese_esport_logo_32.png"
+  },
+  "resources/images/szoese_esport_logo_512.png": {
+    "file": "assets/szoese_esport_logo_512-hdg0lmzk.png",
+    "src": "resources/images/szoese_esport_logo_512.png"
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-JzZ5dANH.js",
+    "isEntry": true,
+    "src": "resources/js/app.js"
+  }
+}
