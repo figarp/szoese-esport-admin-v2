@@ -16,8 +16,16 @@
             <div class="col-md-4">
                 <h5>Kövess minket!</h5>
                 <ul class="list-inline">
-                    <li class="list-inline-item"><a href="https://www.facebook.com/szoese.esport" target="_blank"><i
-                                class="fab fa-facebook-f"></i></a></li>
+                    <li class="list-inline-item">
+                        <a href="https://www.facebook.com/szoese.esport" target="_blank">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="https://discord.gg/8eNhAWSy58" target="_blank">
+                            <i class="fa-brands fa-discord"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
