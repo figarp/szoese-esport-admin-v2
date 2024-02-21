@@ -46,7 +46,9 @@
                                     <p class="card-text">{!! nl2br($post->slug) !!}</p>
                                 </div>
                             </div>
-                            <img src="{{ Storage::url($post->image->path) }}" alt="" class="indexImg">
+                            @if ($post->image->path)
+                                <img src="{{ Storage::url($post->image->path) }}" alt="" class="indexImg">
+                            @endif
                         </div>
                         <div class="card-footer text-muted d-flex justify-content-between align-items-center">
                             <span>{{ $post->created_at }}</span>
