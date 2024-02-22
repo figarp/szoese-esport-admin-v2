@@ -63,9 +63,10 @@
                         </div>
 
                     </div>
-                    <p class="card-text m-auto">
+                    <div class="group_description">
+                        <div class="reset"></div>
                         {!! nl2br($group->description) !!}
-                    </p>
+                    </div>
                     <div class="d-flex justify-content-end mt-2 mb-1">
                         <a href="{{ route('groups.show', $group->id) }}" class="btn btn-info">Bővebben</a>
                     </div>
