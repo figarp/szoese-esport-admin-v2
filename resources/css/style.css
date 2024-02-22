@@ -291,7 +291,7 @@ p {
 }
 
 .indexImg {
-    width: 250px;
+    max-width: 250px;
     border-radius: 0.8rem;
     margin: 1rem;
 }

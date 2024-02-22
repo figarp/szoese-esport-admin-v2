@@ -47,7 +47,8 @@
                                 </div>
                             </div>
                             @if ($post->image_id !== null)
-                                <img src="{{ Storage::url($post->image->path) }}" alt="" class="indexImg">
+                                <img src="{{ Storage::url($post->image->path) }}" alt=""
+                                    class="indexImg align-self-center">
                             @endif
                         </div>
                         <div class="card-footer text-muted d-flex justify-content-between align-items-center">
