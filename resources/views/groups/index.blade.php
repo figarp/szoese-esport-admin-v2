@@ -40,7 +40,7 @@
         <p>
             Az oldalon <a href="{{ route('register') }}">regisztrációt</a> követően lehetőség van csatlakozni mindegyik
             csoportba. Jelentkezést követően a kijelölt
-            <strong>csoportvezető</strong> felveszi veled a kapcsolatot, majd egy rövid beszélgetés utána már tag a
+            <strong>csoportvezető</strong> felveszi veled a kapcsolatot, majd egy rövid beszélgetés utána már a
             szakosztály tagja is leszel!
         </p>
         @forelse ($groups as $group)
