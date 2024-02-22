@@ -7,7 +7,14 @@
         <x-go-back-button href="{{ route('dashboard.groups.index') }}" />
         <div class="max-w-xl">
             <div class="d-flex flex-column justify-content-center align-items-center gap-5 mb-3">
-                <img src="{{ Vite::asset('resources/images/szoese_esport_logo_256.png') }}" alt="" class="mw-50">
+                <div class="imageContrainer">
+                    @if ($group->image_id === null)
+                        <img src="{{ Vite::asset('resources/images/szoese_esport_logo_sotet_256.png') }}" alt=""
+                            class="img-fluid">
+                    @else
+                        <img src="{{ Storage::url($group->image->path) }}" alt="" class="img-fluid">
+                    @endif
+                </div>
                 <table class="table table-sm table-hover">
                     <tbody>
                         <tr>

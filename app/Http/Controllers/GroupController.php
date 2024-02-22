@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\KickedOutNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Mail;
 
 class GroupController extends Controller
@@ -98,6 +99,7 @@ class GroupController extends Controller
         $group = Group::findOrFail($id);
         request()->validate([
             'game' => 'required|unique:groups,game,' . $group->id,
+            'image' => 'image|dimensions:min_width=128,min_height=128,max_width=512,max_height=512',
         ]);
 
         try {
@@ -108,7 +110,25 @@ class GroupController extends Controller
                 }
             }
 
-            $group->update(request()->all());
+            if (request()->hasFile('image')) {
+                // Törlés az adatbázisból
+                if ($group->image) {
+                    $group->image->delete();
+
+                    // Törlés a szerverről
+                    Storage::delete($group->image->path);
+                }
+
+                // Új kép feltöltése
+                $path = request()->file('image')->store('public/images');
+                $image = new Image();
+                $image->path = $path;
+                $image->created_by = auth()->user()->id;
+                $image->save();
+                $group->image_id = $image->id;
+            }
+
+            $group->update(request()->except('image'));
 
             return redirect()->route('dashboard.groups.index')->with('success', 'Csoport sikeresen frissítve!');
         } catch (\Throwable $th) {
