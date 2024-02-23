@@ -310,6 +310,10 @@ p {
     border-radius: 1rem;
 }
 
+.footerImgContainer img {
+    max-width: 250px;
+}
+
 .reset {
     all: unset;
 }

@@ -29,5 +29,10 @@
                 </ul>
             </div>
         </div>
+        <div class="row footerImgContainer">
+            <a href="https://szoese.hu" target="_blank">
+                <img src="{{ Vite::asset('resources/images/szoese_logo_fekete.png') }}" alt="" title="SZoESE">
+            </a>
+        </div>
     </div>
 </footer>
