@@ -28,12 +28,13 @@ class GroupController extends Controller
     public function indexPublic()
     {
         try {
-            $groups = Group::all();
+            $groups = Group::all()->sortByDesc(function ($group) {
+                return $group->membersCount();
+            });
             return view('groups.index', compact('groups'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Ismeretlen hiba történt...');
         }
-
     }
 
     public function create()
